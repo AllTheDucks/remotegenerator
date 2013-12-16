@@ -9,3 +9,9 @@ repositories {
     mavenCentral()
 }
 
+dependencies {
+    compile 'org.reflections:reflections:0.9.8'
+
+    testCompile 'junit:junit:4.11'
+}
+
