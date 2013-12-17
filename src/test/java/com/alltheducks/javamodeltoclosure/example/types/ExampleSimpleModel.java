@@ -1,4 +1,4 @@
-package com.alltheducks.javamodeltoclosure.example.complextypes;
+package com.alltheducks.javamodeltoclosure.example.types;
 
 import com.alltheducks.javamodeltoclosure.annotation.ConversionModel;
 

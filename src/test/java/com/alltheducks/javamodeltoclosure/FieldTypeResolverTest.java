@@ -1,9 +1,9 @@
 package com.alltheducks.javamodeltoclosure;
 
-import com.alltheducks.javamodeltoclosure.FieldTypeResolver;
-import com.alltheducks.javamodeltoclosure.TypeTranslator;
+import com.alltheducks.javamodeltoclosure.model.ConvertedType;
+import com.alltheducks.javamodeltoclosure.resolver.FieldTypeResolver;
+import com.alltheducks.javamodeltoclosure.translator.TypeTranslator;
 import com.alltheducks.javamodeltoclosure.example.conversiontypes.ExampleConversionTypes;
-import com.google.common.reflect.TypeToken;
 import org.junit.Before;
 import org.junit.Test;
 
@@ -34,15 +34,19 @@ public class FieldTypeResolverTest {
 
     @Test
     public void testGetFieldType_withoutConversionTypeAnnotation_expectTranslatorResponse() throws Exception {
-        when(typeTranslator.translate(TypeToken.of(String.class))).thenReturn("TranslatorResponse");
+        ConvertedType convertedType = new ConvertedType();
+        convertedType.setName("TranslatorResponse");
 
         Field field = ExampleConversionTypes.class.getDeclaredField("withoutConversionTypeAnnotation");
-        assertEquals("TranslatorResponse", fieldTypeResolver.getFieldType(field));
+
+        when(typeTranslator.translate(field)).thenReturn(convertedType);
+
+        assertEquals("TranslatorResponse", fieldTypeResolver.getFieldType(field).getName());
     }
 
     @Test
     public void testGetFieldType_withConversionTypeAnnotation_expectAnnotationValue() throws Exception {
         Field field = ExampleConversionTypes.class.getDeclaredField("withConversionTypeAnnotation");
-        assertEquals("AnnotationValue", fieldTypeResolver.getFieldType(field));
+        assertEquals("AnnotationValue", fieldTypeResolver.getFieldType(field).getName());
     }
 }

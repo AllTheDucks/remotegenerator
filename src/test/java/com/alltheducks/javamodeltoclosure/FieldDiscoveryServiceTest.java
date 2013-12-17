@@ -15,8 +15,8 @@ public class FieldDiscoveryServiceTest {
 
     @Test
     public void testEnumerateFields_withExampleClass_returnsTwoFields() throws Exception {
-        FieldDiscoveryService service = new FieldDiscoveryService(Example.class);
-        Set<Field> fields = service.enumerateFields();
+        FieldDiscoveryService service = new FieldDiscoveryService();
+        Set<Field> fields = service.enumerateFields(Example.class);
 
         Field aString = Example.class.getDeclaredField("aString");
         Field anInt = Example.class.getDeclaredField("anInt");
@@ -28,8 +28,8 @@ public class FieldDiscoveryServiceTest {
 
     @Test
     public void testEnumerateFields_withInheritenceChildAnnotated_returnsParentAndChildFields() throws Exception {
-        FieldDiscoveryService service = new FieldDiscoveryService(ExampleChildWithAnnotation.class);
-        Set<Field> fields = service.enumerateFields();
+        FieldDiscoveryService service = new FieldDiscoveryService();
+        Set<Field> fields = service.enumerateFields(ExampleChildWithAnnotation.class);
 
         Field childString = ExampleChildWithAnnotation.class.getDeclaredField("childString");
         Field parentString = ExampleChildWithAnnotation.class.getSuperclass().getDeclaredField("parentString");
@@ -41,8 +41,8 @@ public class FieldDiscoveryServiceTest {
 
     @Test
     public void testEnumerateFields_withIgnoredField_returnFieldsWithoutIgnoreAnnotationOnly() throws Exception {
-        FieldDiscoveryService service = new FieldDiscoveryService(ExampleWithIgnoredFields.class);
-        Set<Field> fields = service.enumerateFields();
+        FieldDiscoveryService service = new FieldDiscoveryService();
+        Set<Field> fields = service.enumerateFields(ExampleWithIgnoredFields.class);
 
         Field aString = ExampleWithIgnoredFields.class.getDeclaredField("aString");
         Field ignoredString = ExampleWithIgnoredFields.class.getDeclaredField("ignoredString");

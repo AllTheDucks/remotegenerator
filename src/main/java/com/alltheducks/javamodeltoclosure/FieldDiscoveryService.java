@@ -9,13 +9,7 @@ import java.util.Set;
 
 public class FieldDiscoveryService {
 
-    private Class<?> clazz;
-
-    public FieldDiscoveryService(Class<?> clazz) {
-        this.clazz = clazz;
-    }
-
-    public Set<Field> enumerateFields() {
+    public Set<Field> enumerateFields(Class<?> clazz) {
         return ReflectionUtils.getAllFields(clazz, Predicates.not(ReflectionUtils.withAnnotation(ConversionIgnore.class)));
     }
 

@@ -1,9 +1,11 @@
 package com.alltheducks.javamodeltoclosure.closure;
 
-import com.alltheducks.javamodeltoclosure.closure.ClosureTypeTranslator;
-import com.alltheducks.javamodeltoclosure.example.complextypes.ExampleGenericModel;
-import com.alltheducks.javamodeltoclosure.example.complextypes.ExampleSimpleModel;
-import com.alltheducks.javamodeltoclosure.example.complextypes.ExampleWithComplexTypes;
+import com.alltheducks.javamodeltoclosure.example.types.ExampleGenericModel;
+import com.alltheducks.javamodeltoclosure.example.types.ExampleSimpleModel;
+import com.alltheducks.javamodeltoclosure.example.types.ExampleWithComplexTypes;
+import com.alltheducks.javamodeltoclosure.example.types.ExampleWithSimpleTypes;
+import com.alltheducks.javamodeltoclosure.model.ConvertedField;
+import com.alltheducks.javamodeltoclosure.model.ConvertedType;
 import com.google.common.reflect.TypeToken;
 import org.junit.Before;
 import org.junit.Test;
@@ -25,67 +27,74 @@ public class ClosureTypeTranslatorTest {
 
     @Test
     public void testTranslate_withInteger_expectNumber() throws Exception {
-        assertEquals("number", translator.translate(TypeToken.of(Integer.class)));
+        Field field = ExampleWithSimpleTypes.class.getDeclaredField("anInteger");
+        assertEquals("number", translator.translate(field).getName());
     }
 
     @Test
     public void testTranslate_withPrimitiveInt_expectNumber() throws Exception {
-        assertEquals("number", translator.translate(TypeToken.of(int.class)));
+        Field field = ExampleWithSimpleTypes.class.getDeclaredField("anInt");
+        assertEquals("number", translator.translate(field).getName());
     }
 
     @Test
     public void testTranslate_withPrimitiveChar_expectString() throws Exception {
-        assertEquals("string", translator.translate(TypeToken.of(char.class)));
+        Field field = ExampleWithSimpleTypes.class.getDeclaredField("aChar");
+        assertEquals("string", translator.translate(field).getName());
     }
 
     @Test
     public void testTranslate_withPrimitiveBoolean_expectBoolean() throws Exception {
-        assertEquals("boolean", translator.translate(TypeToken.of(boolean.class)));
+        Field field = ExampleWithSimpleTypes.class.getDeclaredField("aBoolean");
+        assertEquals("boolean", translator.translate(field).getName());
+    }
+
+    @Test
+    public void testTranslate_withArrayOfStrings_expectArrayOfStrings() throws Exception {
+        Field field = ExampleWithSimpleTypes.class.getDeclaredField("aStringArray");
+        assertEquals("Array.<string>", translator.translate(field).getName());
+    }
+
+    @Test
+    public void testTranslate_withArrayOfIntegers_expectArrayOfNumbers() throws Exception {
+        Field field = ExampleWithSimpleTypes.class.getDeclaredField("anIntegerArray");
+        assertEquals("Array.<number>", translator.translate(field).getName());
+    }
+
+    @Test
+    public void testTranslate_withString_expectString() throws Exception {
+        Field field = ExampleWithSimpleTypes.class.getDeclaredField("aString");
+        assertEquals("string", translator.translate(field).getName());
     }
 
     @Test
     public void testTranslate_withListOfStrings_expectListOfStrings() throws Exception {
         Field field = ExampleWithComplexTypes.class.getDeclaredField("listOfStrings");
-        assertEquals("List.<string>", translator.translate(TypeToken.of(field.getGenericType())));
+        assertEquals("List.<string>", translator.translate(field).getName());
     }
 
     @Test
     public void testTranslate_withArrayListOfStrings_expectListOfStrings() throws Exception {
         Field field = ExampleWithComplexTypes.class.getDeclaredField("arrayListOfStrings");
-        assertEquals("List.<string>", translator.translate(TypeToken.of(field.getGenericType())));
+        assertEquals("List.<string>", translator.translate(field).getName());
     }
 
     @Test
     public void testTranslate_withHashMapOfIntegerKeysAndStringValues_expectMapOfNumberKeysAndStringValues() throws Exception {
         Field field = ExampleWithComplexTypes.class.getDeclaredField("hashMapOfIntegerKeysAndStringValues");
-        assertEquals("Map.<number,string>", translator.translate(TypeToken.of(field.getGenericType())));
+        assertEquals("Map.<number,string>", translator.translate(field).getName());
     }
 
     @Test
     public void testTranslate_withHashMapOfStringKeysAndArrayListOfStringValues_expectMapOfStringKeysAndListOfStringValues() throws Exception {
         Field field = ExampleWithComplexTypes.class.getDeclaredField("hashMapOfStringKeysAndArrayListOfStringValues");
-        assertEquals("Map.<string,List.<string>>", translator.translate(TypeToken.of(field.getGenericType())));
+        assertEquals("Map.<string,List.<string>>", translator.translate(field).getName());
     }
 
     @Test
     public void testTranslate_withListOfStringsArrays_expectMapOfStringKeysAndListOfStringValues() throws Exception {
         Field field = ExampleWithComplexTypes.class.getDeclaredField("listOfStringsArrays");
-        assertEquals("Array.<List.<string>>", translator.translate(TypeToken.of(field.getGenericType())));
-    }
-
-    @Test
-    public void testTranslate_withArrayOfStrings_expectArrayOfStrings() throws Exception {
-        assertEquals("Array.<string>", translator.translate(TypeToken.of(String[].class)));
-    }
-
-    @Test
-    public void testTranslate_withArrayOfIntegers_expectArrayOfNumbers() throws Exception {
-        assertEquals("Array.<number>", translator.translate(TypeToken.of(Integer[].class)));
-    }
-
-    @Test
-    public void testTranslate_withString_expectString() throws Exception {
-        assertEquals("string", translator.translate(TypeToken.of(String.class)));
+        assertEquals("Array.<List.<string>>", translator.translate(field).getName());
     }
 
     @Test
@@ -96,7 +105,7 @@ public class ClosureTypeTranslatorTest {
         packageTypes.add(TypeToken.of(ExampleSimpleModel.class));
         translator.setPackageTypes(packageTypes);
 
-        assertEquals("ExampleSimpleModel", translator.translate(TypeToken.of(field.getGenericType())));
+        assertEquals("ExampleSimpleModel", translator.translate(field).getName());
     }
 
     @Test
@@ -107,7 +116,7 @@ public class ClosureTypeTranslatorTest {
         packageTypes.add(TypeToken.of(ExampleSimpleModel.class));
         translator.setPackageTypes(packageTypes);
 
-        assertEquals("List.<ExampleSimpleModel>", translator.translate(TypeToken.of(field.getGenericType())));
+        assertEquals("List.<ExampleSimpleModel>", translator.translate(field).getName());
     }
 
     @Test
@@ -118,7 +127,7 @@ public class ClosureTypeTranslatorTest {
         packageTypes.add(TypeToken.of(ExampleGenericModel.class));
         translator.setPackageTypes(packageTypes);
 
-        assertEquals("ExampleGenericModel.<string,string,string>", translator.translate(TypeToken.of(field.getGenericType())));
+        assertEquals("ExampleGenericModel.<string,string,string>", translator.translate(field).getName());
     }
 
     @Test
@@ -130,6 +139,12 @@ public class ClosureTypeTranslatorTest {
         packageTypes.add(TypeToken.of(ExampleSimpleModel.class));
         translator.setPackageTypes(packageTypes);
 
-        assertEquals("ExampleGenericModel.<ExampleSimpleModel,List.<string>,Map.<number,Array.<number>>>", translator.translate(TypeToken.of(field.getGenericType())));
+        ConvertedType convertedType = translator.translate(field);
+
+        assertEquals("ExampleGenericModel.<ExampleSimpleModel,List.<goog.date.DateTime>,Map.<number,Array.<number>>>", convertedType.getName());
+        assertEquals(3, convertedType.getRequires().size());
+        assertTrue("Contains 'ExampleGenericModel'", convertedType.getRequires().contains("ExampleGenericModel"));
+        assertTrue("Contains 'ExampleSimpleModel'", convertedType.getRequires().contains("ExampleSimpleModel"));
+        assertTrue("Contains 'goog.date.DateTime'", convertedType.getRequires().contains("goog.date.DateTime"));
     }
 }

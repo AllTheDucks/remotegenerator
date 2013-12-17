@@ -1,0 +1,10 @@
+{namespace com.alltheducks.javamodeltoclosure}
+
+/**
+  *
+  * @param convertedField
+  */
+{template .closureField}
+    \/** @type \{{convertedField.type}\} *\/
+    var this.{convertedField.name};
+{/template}

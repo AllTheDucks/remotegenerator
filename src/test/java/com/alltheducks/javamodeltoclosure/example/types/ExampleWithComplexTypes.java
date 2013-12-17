@@ -1,11 +1,8 @@
-package com.alltheducks.javamodeltoclosure.example.complextypes;
+package com.alltheducks.javamodeltoclosure.example.types;
 
 import com.alltheducks.javamodeltoclosure.annotation.ConversionModel;
 
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 @ConversionModel
 public class ExampleWithComplexTypes {
@@ -18,6 +15,6 @@ public class ExampleWithComplexTypes {
     private ExampleSimpleModel exampleSimpleModel;
     private List<ExampleSimpleModel> listOfExampleSimpleModels;
     private ExampleGenericModel<String,String,String> exampleGenericModelWithStringTypeParameters;
-    private ExampleGenericModel<ExampleSimpleModel,List<String>,Map<Integer,Double[]>> exampleGenericModelWithGenericTypeParameters;
+    private ExampleGenericModel<ExampleSimpleModel,List<Date>,Map<Integer,Double[]>> exampleGenericModelWithGenericTypeParameters;
 
 }

@@ -1,6 +1,6 @@
 package com.alltheducks.javamodeltoclosure.exception;
 
-public class TypeDefinitionException extends TypeTranslationException {
+public class TypeDefinitionException extends TranslationException {
 
     public TypeDefinitionException() {
     }

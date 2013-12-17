@@ -1,8 +1,9 @@
-package com.alltheducks.javamodeltoclosure;
+package com.alltheducks.javamodeltoclosure.resolver;
 
 import com.alltheducks.javamodeltoclosure.annotation.ConversionType;
 import com.alltheducks.javamodeltoclosure.exception.FieldTypeResolutionException;
-import com.google.common.reflect.TypeToken;
+import com.alltheducks.javamodeltoclosure.model.ConvertedType;
+import com.alltheducks.javamodeltoclosure.translator.TypeTranslator;
 
 import java.lang.reflect.Field;
 
@@ -10,13 +11,15 @@ public class FieldTypeResolver {
 
     private TypeTranslator typeTranslator;
 
-    public String getFieldType(Field field) throws FieldTypeResolutionException {
+    public ConvertedType getFieldType(Field field) throws FieldTypeResolutionException {
         try {
             ConversionType conversionType = field.getAnnotation(ConversionType.class);
             if(conversionType != null) {
-                return conversionType.value();
+                ConvertedType convertedType = new ConvertedType();
+                convertedType.setName(conversionType.value());
+                return convertedType;
             } else {
-                return typeTranslator.translate(TypeToken.of(field.getGenericType()));
+                return typeTranslator.translate(field);
             }
         } catch (Exception e) {
             throw new FieldTypeResolutionException("Failed to resolve field type.", e);
