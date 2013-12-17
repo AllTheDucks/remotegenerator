@@ -3,6 +3,7 @@ package com.alltheducks.javamodeltoclosure.closure;
 import com.alltheducks.javamodeltoclosure.exception.TranslationException;
 import com.alltheducks.javamodeltoclosure.exception.TypeDefinitionException;
 import com.alltheducks.javamodeltoclosure.model.ConvertedType;
+import com.alltheducks.javamodeltoclosure.model.builder.ConvertedTypeBuilder;
 import com.alltheducks.javamodeltoclosure.translator.TypeTranslator;
 import com.google.common.reflect.TypeToken;
 
@@ -48,36 +49,36 @@ public class ClosureTypeTranslator implements TypeTranslator {
         }
     }
 
-    private TypeBuilder buildType(TypeToken<?> typeToken) throws Exception {
+    private ConvertedTypeBuilder buildType(TypeToken<?> typeToken) throws Exception {
         return buildType(typeToken, false);
     }
 
-    private TypeBuilder buildType(TypeToken<?> typeToken, boolean skipGenerics) throws TranslationException {
+    private ConvertedTypeBuilder buildType(TypeToken<?> typeToken, boolean skipGenerics) throws TranslationException {
 
         try {
 
             if (typeToken.isArray()) {
-                TypeBuilder typeBuilder = this.buildType(typeToken.getComponentType(), skipGenerics);
-                typeBuilder.prependName("Array.<").appendName(">");
-                return typeBuilder;
+                ConvertedTypeBuilder convertedTypeBuilder = this.buildType(typeToken.getComponentType(), skipGenerics);
+                convertedTypeBuilder.prependName("Array.<").appendName(">");
+                return convertedTypeBuilder;
             }
 
             if(!skipGenerics) {
                 TypeVariable<? extends Class<?>>[] typeParameters = typeToken.getRawType().getTypeParameters();
                 if (typeParameters.length > 0) {
 
-                    TypeBuilder typeBuilder = this.buildType(typeToken, true);
-                    typeBuilder.appendName(".<");
+                    ConvertedTypeBuilder convertedTypeBuilder = this.buildType(typeToken, true);
+                    convertedTypeBuilder.appendName(".<");
 
-                    typeBuilder.appendTypeBuilder(this.translateGenericType(typeParameters[0], typeToken, skipGenerics));
+                    convertedTypeBuilder.appendTypeBuilder(this.translateGenericType(typeParameters[0], typeToken, skipGenerics));
                     for(int i = 1; i < typeParameters.length; i++) {
-                        typeBuilder.appendName(",");
-                        typeBuilder.appendTypeBuilder(this.translateGenericType(typeParameters[i], typeToken, skipGenerics));
+                        convertedTypeBuilder.appendName(",");
+                        convertedTypeBuilder.appendTypeBuilder(this.translateGenericType(typeParameters[i], typeToken, skipGenerics));
                     }
 
-                    typeBuilder.appendName(">");
+                    convertedTypeBuilder.appendName(">");
 
-                    return typeBuilder;
+                    return convertedTypeBuilder;
                 }
             }
 
@@ -86,29 +87,29 @@ public class ClosureTypeTranslator implements TypeTranslator {
                     if(packageType.isAssignableFrom(typeToken)) {
                         //TODO: deal with packages.
                         String typeName = packageType.getRawType().getSimpleName();
-                        TypeBuilder typeBuilder = new TypeBuilder();
-                        typeBuilder.appendName(typeName);
-                        typeBuilder.addRequires(typeName);
-                        return typeBuilder;
+                        ConvertedTypeBuilder convertedTypeBuilder = new ConvertedTypeBuilder();
+                        convertedTypeBuilder.appendName(typeName);
+                        convertedTypeBuilder.addRequires(typeName);
+                        return convertedTypeBuilder;
                     }
                 }
             }
 
             for(TypeToken<?> primitiveClass : PRIMITIVE_TRANSLATIONS.keySet()) {
                 if(primitiveClass.isAssignableFrom(typeToken)) {
-                    TypeBuilder typeBuilder = new TypeBuilder();
-                    typeBuilder.appendName(PRIMITIVE_TRANSLATIONS.get(primitiveClass));
-                    return typeBuilder;
+                    ConvertedTypeBuilder convertedTypeBuilder = new ConvertedTypeBuilder();
+                    convertedTypeBuilder.appendName(PRIMITIVE_TRANSLATIONS.get(primitiveClass));
+                    return convertedTypeBuilder;
                 }
             }
 
             for(TypeToken<?> clazz : CLASS_TRANSLATIONS.keySet()) {
                 if(clazz.isAssignableFrom(typeToken)) {
                     String typeName = CLASS_TRANSLATIONS.get(clazz);
-                    TypeBuilder typeBuilder = new TypeBuilder();
-                    typeBuilder.appendName(typeName);
-                    typeBuilder.addRequires(typeName);
-                    return typeBuilder;
+                    ConvertedTypeBuilder convertedTypeBuilder = new ConvertedTypeBuilder();
+                    convertedTypeBuilder.appendName(typeName);
+                    convertedTypeBuilder.addRequires(typeName);
+                    return convertedTypeBuilder;
                 }
             }
 
@@ -120,7 +121,7 @@ public class ClosureTypeTranslator implements TypeTranslator {
 
     }
 
-    private TypeBuilder translateGenericType(Type parameterType, TypeToken<?> typeToken, boolean skipGenerics) throws Exception {
+    private ConvertedTypeBuilder translateGenericType(Type parameterType, TypeToken<?> typeToken, boolean skipGenerics) throws Exception {
         TypeToken<?> newTypeToken = typeToken.resolveType(parameterType);
         return this.buildType(newTypeToken, skipGenerics);
     }
@@ -133,38 +134,5 @@ public class ClosureTypeTranslator implements TypeTranslator {
         this.packageTypes = packageTypes;
     }
 
-    private class TypeBuilder {
 
-        StringBuilder nameBuilder = new StringBuilder();
-
-        public TypeBuilder prependName(String prepend) {
-            nameBuilder.insert(0, prepend);
-            return this;
-        }
-        public TypeBuilder appendName(String append) {
-            nameBuilder.append(append);
-            return this;
-        }
-
-        Set<String> requires = new HashSet<String>();
-
-        public TypeBuilder addRequires(String require) {
-            requires.add(require);
-            return this;
-        }
-
-        public TypeBuilder appendTypeBuilder(TypeBuilder typeBuilder) {
-            this.nameBuilder.append(typeBuilder.nameBuilder);
-            this.requires.addAll(typeBuilder.requires);
-            return this;
-        }
-
-        public ConvertedType getConvertedType() {
-            ConvertedType convertedType = new ConvertedType();
-            convertedType.setName(nameBuilder.toString());
-            convertedType.setRequires(requires);
-            return convertedType;
-        }
-
-    }
 }
