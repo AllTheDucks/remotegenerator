@@ -1,8 +1,8 @@
-package com.alltheducks.javamodeltoclosure.test.example.oneannotatedclass;
+package com.alltheducks.javamodeltoclosure.example.oneannotatedclass;
 
-import com.alltheducks.javamodeltoclosure.ClosureModel;
+import com.alltheducks.javamodeltoclosure.annotation.ConversionModel;
 
-@ClosureModel
+@ConversionModel
 public class Example {
 
     private String aString;

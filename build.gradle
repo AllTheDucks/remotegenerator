@@ -10,8 +10,16 @@ repositories {
 }
 
 dependencies {
-    compile 'org.reflections:reflections:0.9.8'
+    compile 'org.reflections:reflections:0.9.8',
+            'com.google.guava:guava:15.0',
+            'com.google.template:soy:2012-12-21'
 
-    testCompile 'junit:junit:4.11'
+    testCompile 'junit:junit:4.11',
+                'org.mockito:mockito-all:1.9.5'
+
+}
+
+tasks.withType(Compile) {
+    options.compilerArgs << "-Xlint:unchecked"
 }
 
