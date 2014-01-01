@@ -11,4 +11,7 @@ public class ExampleConversionTypes {
     @ConversionType("AnnotationValue")
     private String withConversionTypeAnnotation;
 
+    @ConversionType(value = "AnnotationValue", requires = {"RequiresOne","RequiresTwo"})
+    private String withConversionTypeAnnotationAndRequires;
+
 }

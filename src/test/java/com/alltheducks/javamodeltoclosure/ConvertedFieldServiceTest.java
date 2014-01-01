@@ -12,16 +12,16 @@ import java.lang.reflect.Field;
 import static org.junit.Assert.*;
 import static org.mockito.Mockito.*;
 
-public class ConversionFieldServiceTest {
+public class ConvertedFieldServiceTest {
 
-    private ConversionFieldService conversionFieldService;
+    private ConvertedFieldService conversionFieldService;
     private FieldTypeResolver fieldTypeResolver;
 
     @Before
     public void setUp() {
         fieldTypeResolver = mock(FieldTypeResolver.class);
 
-        conversionFieldService = new ConversionFieldService();
+        conversionFieldService = new ConvertedFieldService();
         conversionFieldService.setFieldTypeResolver(fieldTypeResolver);
     }
 
@@ -33,7 +33,7 @@ public class ConversionFieldServiceTest {
         Field field = Example.class.getDeclaredField("aString");
         when(fieldTypeResolver.getFieldType(field)).thenReturn(convertedType);
 
-        ConvertedField convertedField = conversionFieldService.getConversionField(field);
+        ConvertedField convertedField = conversionFieldService.getConvertedField(field);
         assertEquals("aString", convertedField.getName());
         assertEquals("string", convertedField.getType().getName());
     }

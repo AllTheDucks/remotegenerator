@@ -10,18 +10,26 @@ import com.alltheducks.javamodeltoclosure.example.oneannotatedclass.Example;
 import com.alltheducks.javamodeltoclosure.example.threeannotatedclasses.ExampleOne;
 import com.alltheducks.javamodeltoclosure.example.threeannotatedclasses.ExampleThree;
 import com.alltheducks.javamodeltoclosure.example.threeannotatedclasses.ExampleTwo;
+import org.junit.Before;
 import org.junit.Test;
 
+import java.util.Collection;
 import java.util.Set;
 
 import static org.junit.Assert.*;
 
 public class ConversionModelDiscoveryServiceTest {
 
+    ConversionModelDiscoveryService conversionModelDiscoveryService;
+
+    @Before
+    public void setUp() {
+        conversionModelDiscoveryService = new ConversionModelDiscoveryService();
+    }
+
     @Test
     public void testEnumerateClasses_withOneAnnotatedClass_expectExampleOne() throws Exception {
-        ConversionModelDiscoveryService service = new ConversionModelDiscoveryService("com.alltheducks.javamodeltoclosure.example.oneannotatedclass");
-        Set<Class<?>> classes = service.enumerateClasses();
+        Collection<Class<?>> classes = conversionModelDiscoveryService.enumerateClasses("com.alltheducks.javamodeltoclosure.example.oneannotatedclass");
 
         assertEquals(1, classes.size());
         assertTrue("Contains Example", classes.contains(Example.class));
@@ -29,8 +37,7 @@ public class ConversionModelDiscoveryServiceTest {
 
     @Test
     public void testEnumerateClasses_withThreeAnnotatedClasses_expectThreeClasses() throws Exception {
-        ConversionModelDiscoveryService service = new ConversionModelDiscoveryService("com.alltheducks.javamodeltoclosure.example.threeannotatedclasses");
-        Set<Class<?>> classes = service.enumerateClasses();
+        Collection<Class<?>> classes = conversionModelDiscoveryService.enumerateClasses("com.alltheducks.javamodeltoclosure.example.threeannotatedclasses");
 
         assertEquals(3, classes.size());
         assertTrue("Contains ExampleOne", classes.contains(ExampleOne.class));
@@ -40,8 +47,7 @@ public class ConversionModelDiscoveryServiceTest {
 
     @Test
     public void testEnumerateClasses_withMixedAnnotatedClasses_expectOnlyAnnotatedClasses() throws Exception {
-        ConversionModelDiscoveryService service = new ConversionModelDiscoveryService("com.alltheducks.javamodeltoclosure.example.mixedannotations");
-        Set<Class<?>> classes = service.enumerateClasses();
+        Collection<Class<?>> classes = conversionModelDiscoveryService.enumerateClasses("com.alltheducks.javamodeltoclosure.example.mixedannotations");
 
         assertEquals(2, classes.size());
         assertTrue("Contains AnnotatedOne", classes.contains(AnnotatedOne.class));
@@ -52,8 +58,7 @@ public class ConversionModelDiscoveryServiceTest {
 
     @Test
     public void testEnumerateClasses_withInheritanceChildAnnotated_expectOnlyChild() throws Exception {
-        ConversionModelDiscoveryService service = new ConversionModelDiscoveryService("com.alltheducks.javamodeltoclosure.example.inheritancechildannotated");
-        Set<Class<?>> classes = service.enumerateClasses();
+        Collection<Class<?>> classes = conversionModelDiscoveryService.enumerateClasses("com.alltheducks.javamodeltoclosure.example.inheritancechildannotated");
 
         assertEquals(1, classes.size());
         assertTrue("Contains ExampleChildWithAnnotation", classes.contains(ExampleChildWithAnnotation.class));
@@ -61,8 +66,7 @@ public class ConversionModelDiscoveryServiceTest {
 
     @Test
     public void testEnumerateClasses_withInheritanceParentAnnotated_expectOnlyParent() throws Exception {
-        ConversionModelDiscoveryService service = new ConversionModelDiscoveryService("com.alltheducks.javamodeltoclosure.example.inheritanceparentannotated");
-        Set<Class<?>> classes = service.enumerateClasses();
+        Collection<Class<?>> classes = conversionModelDiscoveryService.enumerateClasses("com.alltheducks.javamodeltoclosure.example.inheritanceparentannotated");
 
         assertEquals(1, classes.size());
         assertTrue("Contains ExampleParentWithAnnotation", classes.contains(ExampleParentWithAnnotation.class));

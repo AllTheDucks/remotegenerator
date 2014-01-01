@@ -7,6 +7,7 @@ import com.alltheducks.javamodeltoclosure.example.oneannotatedclass.Example;
 import org.junit.Test;
 
 import java.lang.reflect.Field;
+import java.util.Collection;
 import java.util.Set;
 
 import static org.junit.Assert.*;
@@ -16,7 +17,7 @@ public class FieldDiscoveryServiceTest {
     @Test
     public void testEnumerateFields_withExampleClass_returnsTwoFields() throws Exception {
         FieldDiscoveryService service = new FieldDiscoveryService();
-        Set<Field> fields = service.enumerateFields(Example.class);
+        Collection<Field> fields = service.enumerateFields(Example.class);
 
         Field aString = Example.class.getDeclaredField("aString");
         Field anInt = Example.class.getDeclaredField("anInt");
@@ -29,7 +30,7 @@ public class FieldDiscoveryServiceTest {
     @Test
     public void testEnumerateFields_withInheritenceChildAnnotated_returnsParentAndChildFields() throws Exception {
         FieldDiscoveryService service = new FieldDiscoveryService();
-        Set<Field> fields = service.enumerateFields(ExampleChildWithAnnotation.class);
+        Collection<Field> fields = service.enumerateFields(ExampleChildWithAnnotation.class);
 
         Field childString = ExampleChildWithAnnotation.class.getDeclaredField("childString");
         Field parentString = ExampleChildWithAnnotation.class.getSuperclass().getDeclaredField("parentString");
@@ -42,7 +43,7 @@ public class FieldDiscoveryServiceTest {
     @Test
     public void testEnumerateFields_withIgnoredField_returnFieldsWithoutIgnoreAnnotationOnly() throws Exception {
         FieldDiscoveryService service = new FieldDiscoveryService();
-        Set<Field> fields = service.enumerateFields(ExampleWithIgnoredFields.class);
+        Collection<Field> fields = service.enumerateFields(ExampleWithIgnoredFields.class);
 
         Field aString = ExampleWithIgnoredFields.class.getDeclaredField("aString");
         Field ignoredString = ExampleWithIgnoredFields.class.getDeclaredField("ignoredString");

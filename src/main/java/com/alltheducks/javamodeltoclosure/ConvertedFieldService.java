@@ -5,15 +5,14 @@ import com.alltheducks.javamodeltoclosure.model.ConvertedField;
 import com.alltheducks.javamodeltoclosure.resolver.FieldTypeResolver;
 
 import java.lang.reflect.Field;
-import java.util.HashSet;
-import java.util.Set;
+import java.util.*;
 
-public class ConversionFieldService {
+public class ConvertedFieldService {
 
     FieldTypeResolver fieldTypeResolver;
     FieldDiscoveryService fieldDiscoveryService;
 
-    public ConvertedField getConversionField(Field field) throws FieldTypeResolutionException {
+    public ConvertedField getConvertedField(Field field) throws FieldTypeResolutionException {
         ConvertedField convertedField = new ConvertedField();
 
         convertedField.setName(field.getName());
@@ -22,17 +21,17 @@ public class ConversionFieldService {
         return convertedField;
     }
 
-    public Set<ConvertedField> getAllConversionFields(Set<Field> fields) throws FieldTypeResolutionException {
-        HashSet<ConvertedField> convertedFields = new HashSet<ConvertedField>();
+    public Set<ConvertedField> getAllConvertedFields(Collection<Field> fields) throws FieldTypeResolutionException {
+        Set<ConvertedField> convertedFields = new HashSet<ConvertedField>(fields.size());
         for(Field field : fields) {
-            convertedFields.add(this.getConversionField(field));
+            convertedFields.add(this.getConvertedField(field));
         }
         return convertedFields;
     }
 
-    public Set<ConvertedField> getAllConversionFields(Class<?> clazz) throws FieldTypeResolutionException {
-        Set<Field> fields = fieldDiscoveryService.enumerateFields(clazz);
-        return this.getAllConversionFields(fields);
+    public Set<ConvertedField> getAllConvertedFields(Class<?> clazz) throws FieldTypeResolutionException {
+        Collection<Field> fields = fieldDiscoveryService.enumerateFields(clazz);
+        return this.getAllConvertedFields(fields);
     }
 
     public FieldTypeResolver getFieldTypeResolver() {

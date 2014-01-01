@@ -2,7 +2,9 @@ package com.alltheducks.javamodeltoclosure.model.builder;
 
 import com.alltheducks.javamodeltoclosure.model.ConvertedType;
 
+import java.util.ArrayList;
 import java.util.HashSet;
+import java.util.List;
 import java.util.Set;
 
 

@@ -18,8 +18,7 @@ public class ClosureTypeTranslator implements TypeTranslator {
     public static final Map<TypeToken<?>,String> CLASS_TRANSLATIONS;
     static {
         PRIMITIVE_TRANSLATIONS = new HashMap<TypeToken<?>,String>();
-        PRIMITIVE_TRANSLATIONS.put(TypeToken.of(Map.class), "Map");
-        PRIMITIVE_TRANSLATIONS.put(TypeToken.of(List.class), "List");
+        PRIMITIVE_TRANSLATIONS.put(TypeToken.of(List.class), "Array");
         PRIMITIVE_TRANSLATIONS.put(TypeToken.of(String.class), "string");
         PRIMITIVE_TRANSLATIONS.put(TypeToken.of(Character.class), "string");
         PRIMITIVE_TRANSLATIONS.put(TypeToken.of(char.class), "string");
@@ -35,10 +34,11 @@ public class ClosureTypeTranslator implements TypeTranslator {
 
         CLASS_TRANSLATIONS = new HashMap<TypeToken<?>,String>();
         CLASS_TRANSLATIONS.put(TypeToken.of(Date.class), "goog.date.DateTime");
+        CLASS_TRANSLATIONS.put(TypeToken.of(Map.class), "goog.structs.Map");
 
     }
 
-    private Collection<TypeToken<?>> packageTypes;
+    private Set<TypeToken<?>> packageTypes = new HashSet<TypeToken<?>>();
 
     @Override
     public ConvertedType translate(Field field) throws TranslationException {
@@ -46,6 +46,13 @@ public class ClosureTypeTranslator implements TypeTranslator {
             return this.buildType(TypeToken.of(field.getGenericType())).getConvertedType();
         } catch (Exception e) {
             throw new TranslationException("Failed to translate Field to type.", e);
+        }
+    }
+
+    @Override
+    public void addPackageClasses(Collection<Class<?>> classes) {
+        for(Class<?> clazz : classes) {
+            packageTypes.add(TypeToken.of(clazz));
         }
     }
 
@@ -126,11 +133,11 @@ public class ClosureTypeTranslator implements TypeTranslator {
         return this.buildType(newTypeToken, skipGenerics);
     }
 
-    public Collection<TypeToken<?>> getPackageTypes() {
+    public Set<TypeToken<?>> getPackageTypes() {
         return packageTypes;
     }
 
-    public void setPackageTypes(Collection<TypeToken<?>> packageTypes) {
+    public void setPackageTypes(Set<TypeToken<?>> packageTypes) {
         this.packageTypes = packageTypes;
     }
 

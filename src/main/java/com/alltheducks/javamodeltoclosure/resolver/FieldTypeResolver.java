@@ -6,6 +6,8 @@ import com.alltheducks.javamodeltoclosure.model.ConvertedType;
 import com.alltheducks.javamodeltoclosure.translator.TypeTranslator;
 
 import java.lang.reflect.Field;
+import java.util.Arrays;
+import java.util.HashSet;
 
 public class FieldTypeResolver {
 
@@ -17,6 +19,7 @@ public class FieldTypeResolver {
             if(conversionType != null) {
                 ConvertedType convertedType = new ConvertedType();
                 convertedType.setName(conversionType.value());
+                convertedType.setRequires(new HashSet<String>(Arrays.asList(conversionType.requires())));
                 return convertedType;
             } else {
                 return typeTranslator.translate(field);

@@ -11,4 +11,6 @@ public @interface ConversionType {
 
     String value();
 
+    String[] requires() default {};
+
 }

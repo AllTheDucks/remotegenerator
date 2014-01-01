@@ -12,13 +12,6 @@ import java.lang.reflect.Field;
 import static org.junit.Assert.*;
 import static org.mockito.Mockito.*;
 
-/**
- * Created with IntelliJ IDEA.
- * User: shane
- * Date: 17/12/13
- * Time: 2:13 PM
- * To change this template use File | Settings | File Templates.
- */
 public class FieldTypeResolverTest {
 
     private FieldTypeResolver fieldTypeResolver;
@@ -48,5 +41,15 @@ public class FieldTypeResolverTest {
     public void testGetFieldType_withConversionTypeAnnotation_expectAnnotationValue() throws Exception {
         Field field = ExampleConversionTypes.class.getDeclaredField("withConversionTypeAnnotation");
         assertEquals("AnnotationValue", fieldTypeResolver.getFieldType(field).getName());
+    }
+
+    @Test
+    public void testGetFieldType_withConversionTypeAnnotationAndRequires_expectTwoRequires() throws Exception {
+        Field field = ExampleConversionTypes.class.getDeclaredField("withConversionTypeAnnotationAndRequires");
+        ConvertedType convertedType = fieldTypeResolver.getFieldType(field);
+        assertEquals("AnnotationValue", convertedType.getName());
+        assertEquals(2, convertedType.getRequires().size());
+        assertTrue("Contains 'RequiresOne'", convertedType.getRequires().contains("RequiresOne"));
+        assertTrue("Contains 'RequiresTwo'", convertedType.getRequires().contains("RequiresTwo"));
     }
 }
