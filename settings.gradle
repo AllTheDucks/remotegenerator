@@ -1,0 +1,4 @@
+include "api"
+include "impl"
+
+rootProject.children.each { it.name = 'remotegenerator-' + it.name }
