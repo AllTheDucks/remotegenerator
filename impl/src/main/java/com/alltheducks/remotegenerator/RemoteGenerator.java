@@ -14,11 +14,11 @@ import java.io.OutputStreamWriter;
 import java.util.Collection;
 import java.util.Iterator;
 
-public class remotegenerator {
+public class RemoteGenerator {
 
     public static void main(String[] args) {
         try {
-            String packageName = "com.alltheducks.remotegenerator.example";
+            String packageName = "com.alltheducks.remotegenerator.example.require";
 
             ConversionModelDiscoveryService conversionModelDiscoveryService = new ConversionModelDiscoveryService();
             Collection<Class<?>> conversionModels = conversionModelDiscoveryService.enumerateClasses(packageName);

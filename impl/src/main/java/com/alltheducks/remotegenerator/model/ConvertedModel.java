@@ -7,6 +7,7 @@ public class ConvertedModel {
     private String name;
     private Set<ConvertedField> convertedFields;
     private Set<String> requires;
+    private String originalName;
 
     public String getName() {
         return name;
@@ -30,5 +31,13 @@ public class ConvertedModel {
 
     public void setRequires(Set<String> requires) {
         this.requires = requires;
+    }
+
+    public String getOriginalName() {
+        return originalName;
+    }
+
+    public void setOriginalName(String originalName) {
+        this.originalName = originalName;
     }
 }

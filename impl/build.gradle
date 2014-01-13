@@ -1,7 +1,7 @@
 apply plugin: 'java'
 apply plugin: 'application';
 
-mainClassName = "com.alltheducks.remotegenerator.remotegenerator"
+mainClassName = "com.alltheducks.remotegenerator.RemoteGenerator"
 
 group = 'com.alltheducks'
 version = '1.0-SNAPSHOT'
@@ -18,8 +18,12 @@ dependencies {
             'com.google.guava:guava:15.0',
             'com.google.template:soy:2012-12-21'
 
+    testCompile project(':remotegenerator-example-data')
+
     testCompile 'junit:junit:4.11',
                 'org.mockito:mockito-all:1.9.5'
+
+    runtime project(':remotegenerator-example-data')
 
 }
 

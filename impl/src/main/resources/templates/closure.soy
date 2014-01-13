@@ -7,6 +7,7 @@
   * @param name The name the class.
   * @param fields The classes fields.
   * @param requires The classes required by this class.
+  * @param originalName The name of the class in Java.
   */
 {template .convertedModel}
 
@@ -26,6 +27,9 @@
 
 {literal}
 /**
+  * This class was automatically generated from the java class:
+  * {/literal}{$originalName}{literal}.
+  * DO NOT MODIFY THIS CLASS DIRECTLY.
   * @constructor
   */
 {/literal}
@@ -46,12 +50,12 @@
   * @param type The fields type.
   */
 {template .convertedField}
-    {\t}
+    {sp}{sp}
     {call .convertedType}
         {param name: $type.name /}
     {/call}
     {\r}{\n}
-    {\t}
+    {sp}{sp}
     this.{$name};
     {\r}{\n}
 {/template}

@@ -29,6 +29,8 @@ public class ConvertedModelService {
         }
         convertedModel.setRequires(requires);
 
+        convertedModel.setOriginalName(clazz.getName());
+
         return convertedModel;
     }
 

@@ -1,4 +1,5 @@
 include "api"
 include "impl"
+include "example-data"
 
 rootProject.children.each { it.name = 'remotegenerator-' + it.name }
