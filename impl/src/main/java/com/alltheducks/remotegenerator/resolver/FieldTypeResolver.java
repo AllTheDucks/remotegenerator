@@ -1,6 +1,6 @@
 package com.alltheducks.remotegenerator.resolver;
 
-import com.alltheducks.remotegenerator.ConversionType;
+import com.alltheducks.remotegenerator.RemoteType;
 import com.alltheducks.remotegenerator.exception.FieldTypeResolutionException;
 import com.alltheducks.remotegenerator.model.ConvertedType;
 import com.alltheducks.remotegenerator.translator.TypeTranslator;
@@ -15,11 +15,11 @@ public class FieldTypeResolver {
 
     public ConvertedType getFieldType(Field field) throws FieldTypeResolutionException {
         try {
-            ConversionType conversionType = field.getAnnotation(ConversionType.class);
-            if(conversionType != null) {
+            RemoteType remoteType = field.getAnnotation(RemoteType.class);
+            if(remoteType != null) {
                 ConvertedType convertedType = new ConvertedType();
-                convertedType.setName(conversionType.value());
-                convertedType.setRequires(new HashSet<String>(Arrays.asList(conversionType.requires())));
+                convertedType.setName(remoteType.value());
+                convertedType.setRequires(new HashSet<String>(Arrays.asList(remoteType.requires())));
                 return convertedType;
             } else {
                 return typeTranslator.translate(field);

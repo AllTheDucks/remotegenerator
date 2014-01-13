@@ -1,10 +1,10 @@
 package com.alltheducks.remotegenerator.example.ignoreannotatedfields;
 
-import com.alltheducks.remotegenerator.ConversionIgnore;
+import com.alltheducks.remotegenerator.RemoteIgnore;
 
 public class ExampleWithIgnoredFields {
 
-    @ConversionIgnore
+    @RemoteIgnore
     private String ignoredString;
 
     private String aString;

@@ -1,8 +1,8 @@
 package com.alltheducks.remotegenerator.example.oneannotatedclass;
 
-import com.alltheducks.remotegenerator.ConversionModel;
+import com.alltheducks.remotegenerator.RemoteModel;
 
-@ConversionModel
+@RemoteModel
 public class Example {
 
     private String aString;

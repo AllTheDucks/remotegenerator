@@ -1,7 +1,7 @@
 package com.alltheducks.remotegenerator.example.threeannotatedclasses;
 
-import com.alltheducks.remotegenerator.ConversionModel;
+import com.alltheducks.remotegenerator.RemoteModel;
 
-@ConversionModel
+@RemoteModel
 public class ExampleTwo {
 }

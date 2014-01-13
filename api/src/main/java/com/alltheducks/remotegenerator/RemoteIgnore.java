@@ -7,10 +7,5 @@ import java.lang.annotation.Target;
 
 @Retention(RetentionPolicy.RUNTIME)
 @Target(ElementType.FIELD)
-public @interface ConversionType {
-
-    String value();
-
-    String[] requires() default {};
-
+public @interface RemoteIgnore {
 }

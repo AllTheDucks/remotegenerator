@@ -1,8 +1,8 @@
 package com.alltheducks.remotegenerator.example.inheritancechildannotated;
 
-import com.alltheducks.remotegenerator.ConversionModel;
+import com.alltheducks.remotegenerator.RemoteModel;
 
-@ConversionModel
+@RemoteModel
 public class ExampleChildWithAnnotation extends ExampleParentWithoutAnnotation {
 
     private String childString;

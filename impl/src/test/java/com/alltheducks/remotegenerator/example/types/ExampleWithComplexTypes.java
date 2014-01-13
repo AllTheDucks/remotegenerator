@@ -1,10 +1,10 @@
 package com.alltheducks.remotegenerator.example.types;
 
-import com.alltheducks.remotegenerator.ConversionModel;
+import com.alltheducks.remotegenerator.RemoteModel;
 
 import java.util.*;
 
-@ConversionModel
+@RemoteModel
 public class ExampleWithComplexTypes {
 
     private List<String> listOfStrings;

@@ -1,17 +1,17 @@
 package com.alltheducks.remotegenerator.example.conversiontypes;
 
-import com.alltheducks.remotegenerator.ConversionModel;
-import com.alltheducks.remotegenerator.ConversionType;
+import com.alltheducks.remotegenerator.RemoteModel;
+import com.alltheducks.remotegenerator.RemoteType;
 
-@ConversionModel
+@RemoteModel
 public class ExampleConversionTypes {
 
     private String withoutConversionTypeAnnotation;
 
-    @ConversionType("AnnotationValue")
+    @RemoteType("AnnotationValue")
     private String withConversionTypeAnnotation;
 
-    @ConversionType(value = "AnnotationValue", requires = {"RequiresOne","RequiresTwo"})
+    @RemoteType(value = "AnnotationValue", requires = {"RequiresOne","RequiresTwo"})
     private String withConversionTypeAnnotationAndRequires;
 
 }
