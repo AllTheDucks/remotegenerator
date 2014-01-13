@@ -2,7 +2,7 @@ apply plugin: 'base'
 apply plugin: 'java'
 apply plugin: 'application';
 
-mainClassName = "com.alltheducks.javamodeltoclosure.JavaModelToClosure"
+mainClassName = "com.alltheducks.remotegenerator.remotegenerator"
 
 group = 'com.alltheducks'
 version = '1.0-SNAPSHOT'
