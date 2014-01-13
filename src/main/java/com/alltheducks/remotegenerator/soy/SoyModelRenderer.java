@@ -6,6 +6,7 @@ import com.google.template.soy.SoyFileSet;
 import com.google.template.soy.data.SoyMapData;
 import com.google.template.soy.tofu.SoyTofu;
 
+import java.io.OutputStream;
 import java.net.URL;
 
 public abstract class SoyModelRenderer implements ModelRenderer {
@@ -17,8 +18,6 @@ public abstract class SoyModelRenderer implements ModelRenderer {
 
     @Override
     public void render(ConvertedModel convertedModel, Appendable out) {
-
-
         URL soyTemplateFile = this.getClass().getClassLoader().getResource(this.getSoyFilePath());
         SoyFileSet sfs = new SoyFileSet.Builder().add(soyTemplateFile).build();
         SoyTofu tofu = sfs.compileToTofu();

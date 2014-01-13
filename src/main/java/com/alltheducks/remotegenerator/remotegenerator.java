@@ -5,13 +5,12 @@ import com.alltheducks.remotegenerator.closure.ClosureTypeTranslator;
 import com.alltheducks.remotegenerator.model.ConvertedModel;
 import com.alltheducks.remotegenerator.renderer.ModelRenderer;
 import com.alltheducks.remotegenerator.resolver.FieldTypeResolver;
-import com.alltheducks.remotegenerator.service.ConversionModelDiscoveryService;
-import com.alltheducks.remotegenerator.service.ConvertedFieldService;
-import com.alltheducks.remotegenerator.service.ConvertedModelService;
-import com.alltheducks.remotegenerator.service.FieldDiscoveryService;
+import com.alltheducks.remotegenerator.service.*;
 import com.alltheducks.remotegenerator.translator.SimplePackageTranslator;
 import com.alltheducks.remotegenerator.translator.TypeTranslator;
 
+import java.io.OutputStream;
+import java.io.OutputStreamWriter;
 import java.util.Collection;
 import java.util.Iterator;
 
@@ -48,9 +47,22 @@ public class remotegenerator {
 
             ModelRenderer renderer = new ClosureRenderer();
 
+            LowerCaseFileNameService lowerCaseFileNameService = new LowerCaseFileNameService();
+
+            DeduplicatingFileNameService deduplicatingFileNameService = new DeduplicatingFileNameService();
+            deduplicatingFileNameService.setFileNameService(lowerCaseFileNameService);
+            deduplicatingFileNameService.setExtension("js");
+
+            FileOutputStreamService fileOutputStreamService = new FileOutputStreamService();
+            fileOutputStreamService.setFileNameService(deduplicatingFileNameService);
+            fileOutputStreamService.setBasePath("/tmp/remotegeneratortest/");
+
             Iterator<ConvertedModel> iterator = convertedModels.iterator();
             while(iterator.hasNext()) {
-                renderer.render(iterator.next(), System.out);
+                ConvertedModel convertedModel = iterator.next();
+                OutputStreamWriter outputStreamWriter = new OutputStreamWriter(fileOutputStreamService.getOutputStreamForClass(convertedModel.getName()));
+                renderer.render(convertedModel, outputStreamWriter);
+                outputStreamWriter.close();
             }
 
         } catch (Exception e) {
