@@ -1,6 +1,6 @@
 package com.alltheducks.javamodeltoclosure;
 
-import com.alltheducks.javamodeltoclosure.FieldDiscoveryService;
+import com.alltheducks.javamodeltoclosure.service.FieldDiscoveryService;
 import com.alltheducks.javamodeltoclosure.example.ignoreannotatedfields.ExampleWithIgnoredFields;
 import com.alltheducks.javamodeltoclosure.example.inheritancechildannotated.ExampleChildWithAnnotation;
 import com.alltheducks.javamodeltoclosure.example.oneannotatedclass.Example;
@@ -8,7 +8,6 @@ import org.junit.Test;
 
 import java.lang.reflect.Field;
 import java.util.Collection;
-import java.util.Set;
 
 import static org.junit.Assert.*;
 

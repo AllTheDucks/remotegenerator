@@ -10,11 +10,11 @@ import com.alltheducks.javamodeltoclosure.example.oneannotatedclass.Example;
 import com.alltheducks.javamodeltoclosure.example.threeannotatedclasses.ExampleOne;
 import com.alltheducks.javamodeltoclosure.example.threeannotatedclasses.ExampleThree;
 import com.alltheducks.javamodeltoclosure.example.threeannotatedclasses.ExampleTwo;
+import com.alltheducks.javamodeltoclosure.service.ConversionModelDiscoveryService;
 import org.junit.Before;
 import org.junit.Test;
 
 import java.util.Collection;
-import java.util.Set;
 
 import static org.junit.Assert.*;
 

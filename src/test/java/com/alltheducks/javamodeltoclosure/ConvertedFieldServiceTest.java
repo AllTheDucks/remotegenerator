@@ -4,6 +4,7 @@ import com.alltheducks.javamodeltoclosure.example.oneannotatedclass.Example;
 import com.alltheducks.javamodeltoclosure.model.ConvertedField;
 import com.alltheducks.javamodeltoclosure.model.ConvertedType;
 import com.alltheducks.javamodeltoclosure.resolver.FieldTypeResolver;
+import com.alltheducks.javamodeltoclosure.service.ConvertedFieldService;
 import org.junit.Before;
 import org.junit.Test;
 

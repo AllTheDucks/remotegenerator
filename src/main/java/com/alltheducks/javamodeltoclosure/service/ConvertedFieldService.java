@@ -1,4 +1,4 @@
-package com.alltheducks.javamodeltoclosure;
+package com.alltheducks.javamodeltoclosure.service;
 
 import com.alltheducks.javamodeltoclosure.exception.FieldTypeResolutionException;
 import com.alltheducks.javamodeltoclosure.model.ConvertedField;

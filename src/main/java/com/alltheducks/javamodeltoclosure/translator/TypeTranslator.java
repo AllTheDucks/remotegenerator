@@ -2,14 +2,38 @@ package com.alltheducks.javamodeltoclosure.translator;
 
 import com.alltheducks.javamodeltoclosure.exception.TranslationException;
 import com.alltheducks.javamodeltoclosure.model.ConvertedType;
+import com.google.common.reflect.TypeToken;
 
 import java.lang.reflect.Field;
 import java.util.Collection;
+import java.util.HashSet;
 
-public interface TypeTranslator {
+public abstract class TypeTranslator {
 
-    ConvertedType translate(Field field) throws TranslationException;
+    private Collection<TypeToken<?>> packageTypes = new HashSet<TypeToken<?>>();
+    private PackageTranslator packageTranslator;
 
-    void addPackageClasses(Collection<Class<?>> classes);
+    public abstract ConvertedType translate(Field field) throws TranslationException;
 
+    public void addPackageClasses(Collection<Class<?>> classes) {
+        for(Class<?> clazz : classes) {
+            packageTypes.add(TypeToken.of(clazz));
+        }
+    }
+
+    public Collection<TypeToken<?>> getPackageTypes() {
+        return packageTypes;
+    }
+
+    public void setPackageTypes(Collection<TypeToken<?>> packageTypes) {
+        this.packageTypes = packageTypes;
+    }
+
+    public PackageTranslator getPackageTranslator() {
+        return packageTranslator;
+    }
+
+    public void setPackageTranslator(PackageTranslator packageTranslator) {
+        this.packageTranslator = packageTranslator;
+    }
 }

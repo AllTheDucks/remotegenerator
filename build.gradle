@@ -21,6 +21,8 @@ dependencies {
 
 }
 
+run.dependsOn test
+
 tasks.withType(Compile) {
     options.compilerArgs << "-Xlint:unchecked"
 }

@@ -1,4 +1,4 @@
-package com.alltheducks.javamodeltoclosure;
+package com.alltheducks.javamodeltoclosure.service;
 
 import com.alltheducks.javamodeltoclosure.annotation.ConversionIgnore;
 import com.google.common.base.Predicates;

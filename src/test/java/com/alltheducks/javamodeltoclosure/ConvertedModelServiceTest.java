@@ -4,6 +4,9 @@ import com.alltheducks.javamodeltoclosure.example.oneannotatedclass.Example;
 import com.alltheducks.javamodeltoclosure.model.ConvertedField;
 import com.alltheducks.javamodeltoclosure.model.ConvertedModel;
 import com.alltheducks.javamodeltoclosure.model.ConvertedType;
+import com.alltheducks.javamodeltoclosure.service.ConvertedFieldService;
+import com.alltheducks.javamodeltoclosure.service.ConvertedModelService;
+import com.alltheducks.javamodeltoclosure.translator.SimplePackageTranslator;
 import org.junit.Before;
 import org.junit.Test;
 
@@ -24,6 +27,7 @@ public class ConvertedModelServiceTest {
 
         convertedModelService = new ConvertedModelService();
         convertedModelService.setConvertedFieldService(convertedFieldService);
+        convertedModelService.setPackageTranslator(new SimplePackageTranslator());
     }
 
     @Test
@@ -41,7 +45,7 @@ public class ConvertedModelServiceTest {
         when(convertedFieldService.getAllConvertedFields(Example.class)).thenReturn(convertedFields);
 
         ConvertedModel convertedModel = convertedModelService.getConvertedModel(Example.class);
-        assertEquals("Example", convertedModel.getName());
+        assertEquals("com.alltheducks.javamodeltoclosure.example.oneannotatedclass.Example", convertedModel.getName());
         assertEquals(convertedFields, convertedModel.getConvertedFields());
     }
 }

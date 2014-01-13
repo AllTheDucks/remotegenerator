@@ -6,6 +6,7 @@ import com.alltheducks.javamodeltoclosure.example.types.ExampleWithComplexTypes;
 import com.alltheducks.javamodeltoclosure.example.types.ExampleWithSimpleTypes;
 import com.alltheducks.javamodeltoclosure.model.ConvertedField;
 import com.alltheducks.javamodeltoclosure.model.ConvertedType;
+import com.alltheducks.javamodeltoclosure.translator.SimplePackageTranslator;
 import com.google.common.reflect.TypeToken;
 import org.junit.Before;
 import org.junit.Test;
@@ -23,6 +24,7 @@ public class ClosureTypeTranslatorTest {
     @Before
     public void setUp() {
         translator = new ClosureTypeTranslator();
+        translator.setPackageTranslator(new SimplePackageTranslator());
     }
 
     @Test
@@ -70,31 +72,31 @@ public class ClosureTypeTranslatorTest {
     @Test
     public void testTranslate_withListOfStrings_expectListOfStrings() throws Exception {
         Field field = ExampleWithComplexTypes.class.getDeclaredField("listOfStrings");
-        assertEquals("List.<string>", translator.translate(field).getName());
+        assertEquals("Array.<string>", translator.translate(field).getName());
     }
 
     @Test
     public void testTranslate_withArrayListOfStrings_expectListOfStrings() throws Exception {
         Field field = ExampleWithComplexTypes.class.getDeclaredField("arrayListOfStrings");
-        assertEquals("List.<string>", translator.translate(field).getName());
+        assertEquals("Array.<string>", translator.translate(field).getName());
     }
 
     @Test
     public void testTranslate_withHashMapOfIntegerKeysAndStringValues_expectMapOfNumberKeysAndStringValues() throws Exception {
         Field field = ExampleWithComplexTypes.class.getDeclaredField("hashMapOfIntegerKeysAndStringValues");
-        assertEquals("Map.<number,string>", translator.translate(field).getName());
+        assertEquals("goog.structs.Map.<number,string>", translator.translate(field).getName());
     }
 
     @Test
     public void testTranslate_withHashMapOfStringKeysAndArrayListOfStringValues_expectMapOfStringKeysAndListOfStringValues() throws Exception {
         Field field = ExampleWithComplexTypes.class.getDeclaredField("hashMapOfStringKeysAndArrayListOfStringValues");
-        assertEquals("Map.<string,List.<string>>", translator.translate(field).getName());
+        assertEquals("goog.structs.Map.<string,Array.<string>>", translator.translate(field).getName());
     }
 
     @Test
-    public void testTranslate_withListOfStringsArrays_expectMapOfStringKeysAndListOfStringValues() throws Exception {
+    public void testTranslate_withListOfStringsArrays_expectArrayOfStringKeysAndListOfStringValues() throws Exception {
         Field field = ExampleWithComplexTypes.class.getDeclaredField("listOfStringsArrays");
-        assertEquals("Array.<List.<string>>", translator.translate(field).getName());
+        assertEquals("Array.<Array.<string>>", translator.translate(field).getName());
     }
 
     @Test
@@ -105,7 +107,7 @@ public class ClosureTypeTranslatorTest {
         packageTypes.add(TypeToken.of(ExampleSimpleModel.class));
         translator.setPackageTypes(packageTypes);
 
-        assertEquals("ExampleSimpleModel", translator.translate(field).getName());
+        assertEquals("com.alltheducks.javamodeltoclosure.example.types.ExampleSimpleModel", translator.translate(field).getName());
     }
 
     @Test
@@ -116,7 +118,7 @@ public class ClosureTypeTranslatorTest {
         packageTypes.add(TypeToken.of(ExampleSimpleModel.class));
         translator.setPackageTypes(packageTypes);
 
-        assertEquals("List.<ExampleSimpleModel>", translator.translate(field).getName());
+        assertEquals("Array.<com.alltheducks.javamodeltoclosure.example.types.ExampleSimpleModel>", translator.translate(field).getName());
     }
 
     @Test
@@ -127,7 +129,7 @@ public class ClosureTypeTranslatorTest {
         packageTypes.add(TypeToken.of(ExampleGenericModel.class));
         translator.setPackageTypes(packageTypes);
 
-        assertEquals("ExampleGenericModel.<string,string,string>", translator.translate(field).getName());
+        assertEquals("com.alltheducks.javamodeltoclosure.example.types.ExampleGenericModel.<string,string,string>", translator.translate(field).getName());
     }
 
     @Test
@@ -141,10 +143,10 @@ public class ClosureTypeTranslatorTest {
 
         ConvertedType convertedType = translator.translate(field);
 
-        assertEquals("ExampleGenericModel.<ExampleSimpleModel,List.<goog.date.DateTime>,Map.<number,Array.<number>>>", convertedType.getName());
-        assertEquals(3, convertedType.getRequires().size());
-        assertTrue("Contains 'ExampleGenericModel'", convertedType.getRequires().contains("ExampleGenericModel"));
-        assertTrue("Contains 'ExampleSimpleModel'", convertedType.getRequires().contains("ExampleSimpleModel"));
+        assertEquals("com.alltheducks.javamodeltoclosure.example.types.ExampleGenericModel.<com.alltheducks.javamodeltoclosure.example.types.ExampleSimpleModel,Array.<goog.date.DateTime>,goog.structs.Map.<number,Array.<number>>>", convertedType.getName());
+        assertEquals(4, convertedType.getRequires().size());
+        assertTrue("Contains 'ExampleGenericModel'", convertedType.getRequires().contains("com.alltheducks.javamodeltoclosure.example.types.ExampleGenericModel"));
+        assertTrue("Contains 'ExampleSimpleModel'", convertedType.getRequires().contains("com.alltheducks.javamodeltoclosure.example.types.ExampleSimpleModel"));
         assertTrue("Contains 'goog.date.DateTime'", convertedType.getRequires().contains("goog.date.DateTime"));
     }
 }

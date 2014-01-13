@@ -1,21 +1,22 @@
-package com.alltheducks.javamodeltoclosure;
+package com.alltheducks.javamodeltoclosure.service;
 
 import com.alltheducks.javamodeltoclosure.exception.FieldTypeResolutionException;
 import com.alltheducks.javamodeltoclosure.model.ConvertedField;
 import com.alltheducks.javamodeltoclosure.model.ConvertedModel;
+import com.alltheducks.javamodeltoclosure.translator.PackageTranslator;
 
 import java.util.Collection;
 import java.util.HashSet;
-import java.util.List;
 import java.util.Set;
 
 public class ConvertedModelService {
 
     private ConvertedFieldService convertedFieldService;
+    private PackageTranslator packageTranslator;
 
     public ConvertedModel getConvertedModel(Class<?> clazz) throws FieldTypeResolutionException {
         ConvertedModel convertedModel = new ConvertedModel();
-        convertedModel.setName(clazz.getSimpleName());
+        convertedModel.setName(this.getPackageTranslator().translate(clazz.getName()));
 
         Set<ConvertedField> convertedFields = convertedFieldService.getAllConvertedFields(clazz);
         convertedModel.setConvertedFields(convertedFields);
@@ -52,4 +53,11 @@ public class ConvertedModelService {
         this.convertedFieldService = convertedFieldService;
     }
 
+    public PackageTranslator getPackageTranslator() {
+        return packageTranslator;
+    }
+
+    public void setPackageTranslator(PackageTranslator packageTranslator) {
+        this.packageTranslator = packageTranslator;
+    }
 }

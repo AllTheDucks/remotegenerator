@@ -12,7 +12,7 @@ import java.lang.reflect.Type;
 import java.lang.reflect.TypeVariable;
 import java.util.*;
 
-public class ClosureTypeTranslator implements TypeTranslator {
+public class ClosureTypeTranslator extends TypeTranslator {
 
     public static final Map<TypeToken<?>,String> PRIMITIVE_TRANSLATIONS;
     public static final Map<TypeToken<?>,String> CLASS_TRANSLATIONS;
@@ -38,21 +38,12 @@ public class ClosureTypeTranslator implements TypeTranslator {
 
     }
 
-    private Set<TypeToken<?>> packageTypes = new HashSet<TypeToken<?>>();
-
     @Override
     public ConvertedType translate(Field field) throws TranslationException {
         try {
             return this.buildType(TypeToken.of(field.getGenericType())).getConvertedType();
         } catch (Exception e) {
             throw new TranslationException("Failed to translate Field to type.", e);
-        }
-    }
-
-    @Override
-    public void addPackageClasses(Collection<Class<?>> classes) {
-        for(Class<?> clazz : classes) {
-            packageTypes.add(TypeToken.of(clazz));
         }
     }
 
@@ -89,11 +80,10 @@ public class ClosureTypeTranslator implements TypeTranslator {
                 }
             }
 
-            if(packageTypes != null) {
-                for(TypeToken<?> packageType : packageTypes) {
+            if(this.getPackageTypes() != null) {
+                for(TypeToken<?> packageType : this.getPackageTypes()) {
                     if(packageType.isAssignableFrom(typeToken)) {
-                        //TODO: deal with packages.
-                        String typeName = packageType.getRawType().getSimpleName();
+                        String typeName = this.getPackageTranslator().translate(packageType.getRawType().getName());
                         ConvertedTypeBuilder convertedTypeBuilder = new ConvertedTypeBuilder();
                         convertedTypeBuilder.appendName(typeName);
                         convertedTypeBuilder.addRequires(typeName);
@@ -131,14 +121,6 @@ public class ClosureTypeTranslator implements TypeTranslator {
     private ConvertedTypeBuilder translateGenericType(Type parameterType, TypeToken<?> typeToken, boolean skipGenerics) throws Exception {
         TypeToken<?> newTypeToken = typeToken.resolveType(parameterType);
         return this.buildType(newTypeToken, skipGenerics);
-    }
-
-    public Set<TypeToken<?>> getPackageTypes() {
-        return packageTypes;
-    }
-
-    public void setPackageTypes(Set<TypeToken<?>> packageTypes) {
-        this.packageTypes = packageTypes;
     }
 
 
