@@ -6,6 +6,7 @@ import com.alltheducks.remotegenerator.model.ConvertedType;
 import com.google.template.soy.data.SoyListData;
 import com.google.template.soy.data.SoyMapData;
 
+import java.util.Collections;
 import java.util.Set;
 
 public class ConvertedModelToSoyMapDataConverter {

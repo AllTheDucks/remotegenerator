@@ -31,7 +31,7 @@ public class ConvertedModelService {
         Set<ConvertedField> convertedFields = convertedFieldService.getAllConvertedFields(clazz, genericParameters);
         convertedModel.setConvertedFields(convertedFields);
 
-        Set<String> requires = new HashSet<String>();
+        SortedSet<String> requires = new TreeSet<>();
         for(ConvertedField convertedField : convertedFields) {
             if(convertedField.getType().getRequires() != null) {
                 requires.addAll(convertedField.getType().getRequires());

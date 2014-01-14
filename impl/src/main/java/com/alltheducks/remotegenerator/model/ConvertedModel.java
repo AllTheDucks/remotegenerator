@@ -2,12 +2,13 @@ package com.alltheducks.remotegenerator.model;
 
 import java.util.List;
 import java.util.Set;
+import java.util.SortedSet;
 
 public class ConvertedModel {
 
     private String name;
     private Set<ConvertedField> convertedFields;
-    private Set<String> requires;
+    private SortedSet<String> requires;
     private List<String> genericParameters;
     private String originalName;
 
@@ -27,11 +28,11 @@ public class ConvertedModel {
         this.convertedFields = convertedFields;
     }
 
-    public Set<String> getRequires() {
+    public SortedSet<String> getRequires() {
         return requires;
     }
 
-    public void setRequires(Set<String> requires) {
+    public void setRequires(SortedSet<String> requires) {
         this.requires = requires;
     }
 
