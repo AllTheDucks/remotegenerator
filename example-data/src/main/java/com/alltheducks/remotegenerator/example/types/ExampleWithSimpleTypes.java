@@ -1,5 +1,8 @@
 package com.alltheducks.remotegenerator.example.types;
 
+import com.alltheducks.remotegenerator.RemoteModel;
+
+@RemoteModel
 public class ExampleWithSimpleTypes {
 
     private Integer anInteger;

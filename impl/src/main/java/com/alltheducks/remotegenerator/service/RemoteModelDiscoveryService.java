@@ -6,7 +6,7 @@ import org.reflections.Reflections;
 
 import java.util.Collection;
 
-public class ConversionModelDiscoveryService {
+public class RemoteModelDiscoveryService {
 
     public Collection<Class<?>> enumerateClasses(String packageName) {
         Reflections reflections = new Reflections(packageName);

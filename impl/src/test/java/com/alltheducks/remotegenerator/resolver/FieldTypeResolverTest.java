@@ -1,5 +1,6 @@
 package com.alltheducks.remotegenerator.resolver;
 
+import com.alltheducks.remotegenerator.example.types.ExampleGenericModel;
 import com.alltheducks.remotegenerator.model.ConvertedType;
 import com.alltheducks.remotegenerator.resolver.FieldTypeResolver;
 import com.alltheducks.remotegenerator.translator.TypeTranslator;
@@ -51,5 +52,13 @@ public class FieldTypeResolverTest {
         assertEquals(2, convertedType.getRequires().size());
         assertTrue("Contains 'RequiresOne'", convertedType.getRequires().contains("RequiresOne"));
         assertTrue("Contains 'RequiresTwo'", convertedType.getRequires().contains("RequiresTwo"));
+    }
+
+    @Test
+    public void testGetFieldType_withGenericField_expectGenericType() throws Exception {
+        Field field =  ExampleGenericModel.class.getDeclaredField("fieldT");
+        ConvertedType convertedType = fieldTypeResolver.getFieldType(field);
+
+        assertEquals("T", convertedType.getName());
     }
 }

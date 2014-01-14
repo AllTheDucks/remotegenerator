@@ -1,6 +1,7 @@
 package com.alltheducks.remotegenerator.service;
 
 import com.alltheducks.remotegenerator.example.oneannotatedclass.Example;
+import com.alltheducks.remotegenerator.example.types.ExampleGenericModel;
 import com.alltheducks.remotegenerator.model.ConvertedField;
 import com.alltheducks.remotegenerator.model.ConvertedType;
 import com.alltheducks.remotegenerator.resolver.FieldTypeResolver;

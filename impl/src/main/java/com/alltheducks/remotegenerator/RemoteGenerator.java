@@ -9,7 +9,6 @@ import com.alltheducks.remotegenerator.service.*;
 import com.alltheducks.remotegenerator.translator.SimplePackageTranslator;
 import com.alltheducks.remotegenerator.translator.TypeTranslator;
 
-import java.io.OutputStream;
 import java.io.OutputStreamWriter;
 import java.util.Collection;
 import java.util.Iterator;
@@ -18,10 +17,10 @@ public class RemoteGenerator {
 
     public static void main(String[] args) {
         try {
-            String packageName = "com.alltheducks.remotegenerator.example.require";
+            String packageName = "com.alltheducks.remotegenerator.example.types";
 
-            ConversionModelDiscoveryService conversionModelDiscoveryService = new ConversionModelDiscoveryService();
-            Collection<Class<?>> conversionModels = conversionModelDiscoveryService.enumerateClasses(packageName);
+            RemoteModelDiscoveryService remoteModelDiscoveryService = new RemoteModelDiscoveryService();
+            Collection<Class<?>> conversionModels = remoteModelDiscoveryService.enumerateClasses(packageName);
 
             SimplePackageTranslator simplePackageTranslator = new SimplePackageTranslator();
             simplePackageTranslator.addTranslation(packageName, "jsh");
@@ -55,7 +54,7 @@ public class RemoteGenerator {
 
             FileOutputStreamService fileOutputStreamService = new FileOutputStreamService();
             fileOutputStreamService.setFileNameService(deduplicatingFileNameService);
-            fileOutputStreamService.setBasePath("/tmp/remotegeneratortest/");
+            fileOutputStreamService.setBasePath("d:/tmp/remotegeneratortest/");
 
             Iterator<ConvertedModel> iterator = convertedModels.iterator();
             while(iterator.hasNext()) {

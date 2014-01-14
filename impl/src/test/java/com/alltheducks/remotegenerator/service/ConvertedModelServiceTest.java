@@ -31,7 +31,7 @@ public class ConvertedModelServiceTest {
     }
 
     @Test
-    public void testGetConvertedModel() throws Exception {
+    public void testGetConvertedModel_withSimpleExample_expectConversion() throws Exception {
         ConvertedType convertedType = new ConvertedType();
         convertedType.setName("String");
 
@@ -47,5 +47,9 @@ public class ConvertedModelServiceTest {
         ConvertedModel convertedModel = convertedModelService.getConvertedModel(Example.class);
         assertEquals("com.alltheducks.remotegenerator.example.oneannotatedclass.Example", convertedModel.getName());
         assertEquals(convertedFields, convertedModel.getConvertedFields());
+    }
+
+    @Test void testGetConvertedMode_withGenericExample_expectConversion() throws Exception {
+
     }
 }

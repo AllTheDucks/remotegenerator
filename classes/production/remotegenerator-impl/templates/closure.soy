@@ -1,0 +1,71 @@
+{namespace com.alltheducks.remotegenerator autoescape="false"}
+
+
+
+/**
+  *
+  * @param name The name the class.
+  * @param fields The classes fields.
+  * @param requires The classes required by this class.
+  * @param originalName The name of the class in Java.
+  */
+{template .convertedModel}
+
+    goog.provide('{$name}');
+
+    {\r}{\n}{\r}{\n}
+
+    {foreach $require in $requires}
+        goog.require('{$require}');{\r}{\n}
+    {/foreach}
+
+    {if length($requires) > 0}
+        {\r}{\n}
+    {/if}
+
+    {\r}{\n}
+
+{literal}
+/**
+  * This class was automatically generated from the java class:
+  * {/literal}{$originalName}{literal}.
+  * DO NOT MODIFY THIS CLASS DIRECTLY.
+  * @constructor
+  */
+{/literal}
+    {$name} = function() {lb}{\r}{\n}{\r}{\n}
+    {foreach $field in $fields}
+        {call .convertedField}
+            {param name: $field.name /}
+            {param type: $field.type /}
+        {/call}
+        {\r}{\n}
+    {/foreach}
+    {rb}
+{/template}
+
+/**
+  *
+  * @param name The name of the field.
+  * @param type The fields type.
+  */
+{template .convertedField}
+    {sp}{sp}
+    {call .convertedType}
+        {param name: $type.name /}
+    {/call}
+    {\r}{\n}
+    {sp}{sp}
+    this.{$name};
+    {\r}{\n}
+{/template}
+
+/**
+  *
+  * @param name The name of the type.
+  */
+{template .convertedType}
+    {literal}/** @type {{/literal}
+    {$name}
+    {literal}} */{/literal}
+{/template}
