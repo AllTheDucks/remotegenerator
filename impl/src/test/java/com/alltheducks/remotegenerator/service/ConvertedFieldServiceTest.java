@@ -1,4 +1,4 @@
-package com.alltheducks.remotegenerator;
+package com.alltheducks.remotegenerator.service;
 
 import com.alltheducks.remotegenerator.example.oneannotatedclass.Example;
 import com.alltheducks.remotegenerator.model.ConvertedField;

@@ -1,4 +1,4 @@
-package com.alltheducks.remotegenerator;
+package com.alltheducks.remotegenerator.service;
 
 import com.alltheducks.remotegenerator.service.FieldDiscoveryService;
 import com.alltheducks.remotegenerator.example.ignoreannotatedfields.ExampleWithIgnoredFields;

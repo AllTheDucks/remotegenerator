@@ -1,4 +1,4 @@
-package com.alltheducks.remotegenerator;
+package com.alltheducks.remotegenerator.resolver;
 
 import com.alltheducks.remotegenerator.model.ConvertedType;
 import com.alltheducks.remotegenerator.resolver.FieldTypeResolver;

@@ -1,4 +1,4 @@
-package com.alltheducks.remotegenerator;
+package com.alltheducks.remotegenerator.service;
 
 import com.alltheducks.remotegenerator.example.inheritancechildannotated.ExampleChildWithAnnotation;
 import com.alltheducks.remotegenerator.example.inheritanceparentannotated.ExampleParentWithAnnotation;
