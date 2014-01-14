@@ -1,11 +1,10 @@
 package com.alltheducks.remotegenerator;
 
-import com.alltheducks.remotegenerator.closure.ClosureRenderer;
 import com.alltheducks.remotegenerator.closure.ClosureTypeTranslator;
 import com.alltheducks.remotegenerator.model.ConvertedModel;
-import com.alltheducks.remotegenerator.renderer.ModelRenderer;
 import com.alltheducks.remotegenerator.resolver.FieldTypeResolver;
 import com.alltheducks.remotegenerator.service.*;
+import com.alltheducks.remotegenerator.soy.SoyModelRenderer;
 import com.alltheducks.remotegenerator.translator.SimplePackageTranslator;
 import com.alltheducks.remotegenerator.translator.TypeTranslator;
 
@@ -18,15 +17,17 @@ public class RemoteGenerator {
     public static void main(String[] args) {
         try {
             String packageName = "com.alltheducks.remotegenerator.example.types";
+            String newPackageName = "jsh";
+            String outputPath = "/tmp/remotegeneratortest/";
 
             RemoteModelDiscoveryService remoteModelDiscoveryService = new RemoteModelDiscoveryService();
-            Collection<Class<?>> conversionModels = remoteModelDiscoveryService.enumerateClasses(packageName);
+            Collection<Class<?>> remoteModels = remoteModelDiscoveryService.enumerateClasses(packageName);
 
             SimplePackageTranslator simplePackageTranslator = new SimplePackageTranslator();
-            simplePackageTranslator.addTranslation(packageName, "jsh");
+            simplePackageTranslator.addTranslation(packageName, newPackageName);
 
             TypeTranslator typeTranslator = new ClosureTypeTranslator();
-            typeTranslator.addPackageClasses(conversionModels);
+            typeTranslator.addPackageClasses(remoteModels);
             typeTranslator.setPackageTranslator(simplePackageTranslator);
 
             FieldTypeResolver fieldTypeResolver = new FieldTypeResolver();
@@ -42,9 +43,10 @@ public class RemoteGenerator {
             convertedModelService.setConvertedFieldService(convertedFieldService);
             convertedModelService.setPackageTranslator(simplePackageTranslator);
 
-            Collection<ConvertedModel> convertedModels = convertedModelService.getAllConvertedModels(conversionModels);
+            Collection<ConvertedModel> convertedModels = convertedModelService.getAllConvertedModels(remoteModels);
 
-            ModelRenderer renderer = new ClosureRenderer();
+            SoyModelRenderer soyModelRenderer = new SoyModelRenderer();
+            soyModelRenderer.setSoyFilePath("templates/closure.soy");
 
             LowerCaseFileNameService lowerCaseFileNameService = new LowerCaseFileNameService();
 
@@ -54,13 +56,11 @@ public class RemoteGenerator {
 
             FileOutputStreamService fileOutputStreamService = new FileOutputStreamService();
             fileOutputStreamService.setFileNameService(deduplicatingFileNameService);
-            fileOutputStreamService.setBasePath("/tmp/remotegeneratortest/");
+            fileOutputStreamService.setBasePath(outputPath);
 
-            Iterator<ConvertedModel> iterator = convertedModels.iterator();
-            while(iterator.hasNext()) {
-                ConvertedModel convertedModel = iterator.next();
+            for (ConvertedModel convertedModel : convertedModels) {
                 OutputStreamWriter outputStreamWriter = new OutputStreamWriter(fileOutputStreamService.getOutputStreamForClass(convertedModel.getName()));
-                renderer.render(convertedModel, outputStreamWriter);
+                soyModelRenderer.render(convertedModel, outputStreamWriter);
                 outputStreamWriter.close();
             }
 

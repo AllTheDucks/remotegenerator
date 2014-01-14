@@ -9,12 +9,12 @@ import com.google.template.soy.tofu.SoyTofu;
 import java.io.OutputStream;
 import java.net.URL;
 
-public abstract class SoyModelRenderer implements ModelRenderer {
+public class SoyModelRenderer implements ModelRenderer {
 
     public static final String TEMPLATE_NAMESPACE = "com.alltheducks.remotegenerator";
     public static final String CONVERTED_MODEL_TEMPLATE_NAME = "convertedModel";
 
-    public abstract String getSoyFilePath();
+    private String soyFilePath;
 
     @Override
     public void render(ConvertedModel convertedModel, Appendable out) {
@@ -31,4 +31,11 @@ public abstract class SoyModelRenderer implements ModelRenderer {
 
     }
 
+    public String getSoyFilePath() {
+        return soyFilePath;
+    }
+
+    public void setSoyFilePath(String soyFilePath) {
+        this.soyFilePath = soyFilePath;
+    }
 }
