@@ -5,25 +5,32 @@ import com.alltheducks.remotegenerator.example.types.ExampleSimpleModel;
 import com.alltheducks.remotegenerator.example.types.ExampleWithComplexTypes;
 import com.alltheducks.remotegenerator.example.types.ExampleWithSimpleTypes;
 import com.alltheducks.remotegenerator.model.ConvertedType;
+import com.alltheducks.remotegenerator.service.RemoteModelDiscoveryService;
 import com.alltheducks.remotegenerator.translator.SimplePackageTranslator;
 import com.google.common.reflect.TypeToken;
 import org.junit.Before;
 import org.junit.Test;
 
 import java.lang.reflect.Field;
+import java.util.Collection;
 import java.util.HashSet;
 import java.util.Set;
 
 import static org.junit.Assert.*;
+import static org.mockito.Mockito.*;
 
 public class ClosureTypeTranslatorTest {
 
     ClosureTypeTranslator translator;
+    RemoteModelDiscoveryService remoteModelDiscoveryService;
 
     @Before
     public void setUp() {
+        remoteModelDiscoveryService = mock(RemoteModelDiscoveryService.class);
+
         translator = new ClosureTypeTranslator();
         translator.setPackageTranslator(new SimplePackageTranslator());
+        translator.setRemoteModelDiscoveryService(remoteModelDiscoveryService);
     }
 
     @Test
@@ -100,11 +107,13 @@ public class ClosureTypeTranslatorTest {
 
     @Test
     public void testTranslate_withExampleSimpleModel_expectExampleSimpleModel() throws Exception {
+
+
         Field field = ExampleWithComplexTypes.class.getDeclaredField("exampleSimpleModel");
 
-        Set<TypeToken<?>> packageTypes = new HashSet<TypeToken<?>>();
-        packageTypes.add(TypeToken.of(ExampleSimpleModel.class));
-        translator.setPackageTypes(packageTypes);
+        Collection<Class<?>> packageTypes = new HashSet<>();
+        packageTypes.add(ExampleSimpleModel.class);
+        when(remoteModelDiscoveryService.enumerateClasses()).thenReturn(packageTypes);
 
         assertEquals("com.alltheducks.remotegenerator.example.types.ExampleSimpleModel", translator.translate(field).getName());
     }
@@ -113,9 +122,9 @@ public class ClosureTypeTranslatorTest {
     public void testTranslate_withListOfExampleSimpleModel_expectListOfExampleSimpleModel() throws Exception {
         Field field = ExampleWithComplexTypes.class.getDeclaredField("listOfExampleSimpleModels");
 
-        Set<TypeToken<?>> packageTypes = new HashSet<TypeToken<?>>();
-        packageTypes.add(TypeToken.of(ExampleSimpleModel.class));
-        translator.setPackageTypes(packageTypes);
+        Collection<Class<?>> packageTypes = new HashSet<>();
+        packageTypes.add(ExampleSimpleModel.class);
+        when(remoteModelDiscoveryService.enumerateClasses()).thenReturn(packageTypes);
 
         assertEquals("Array.<com.alltheducks.remotegenerator.example.types.ExampleSimpleModel>", translator.translate(field).getName());
     }
@@ -124,9 +133,9 @@ public class ClosureTypeTranslatorTest {
     public void testTranslate_withExampleGenericModelWithStringTypeParameters_expectExampleGenericModelWithStringTypeParameters() throws Exception {
         Field field = ExampleWithComplexTypes.class.getDeclaredField("exampleGenericModelWithStringTypeParameters");
 
-        Set<TypeToken<?>> packageTypes = new HashSet<TypeToken<?>>();
-        packageTypes.add(TypeToken.of(ExampleGenericModel.class));
-        translator.setPackageTypes(packageTypes);
+        Collection<Class<?>> packageTypes = new HashSet<>();
+        packageTypes.add(ExampleGenericModel.class);
+        when(remoteModelDiscoveryService.enumerateClasses()).thenReturn(packageTypes);
 
         assertEquals("com.alltheducks.remotegenerator.example.types.ExampleGenericModel.<string,string,string>", translator.translate(field).getName());
     }
@@ -135,10 +144,10 @@ public class ClosureTypeTranslatorTest {
     public void testTranslate_withExampleGenericModelWithGenericTypeParameters_expectExampleGenericModelWithGenericTypeParameters() throws Exception {
         Field field = ExampleWithComplexTypes.class.getDeclaredField("exampleGenericModelWithGenericTypeParameters");
 
-        Set<TypeToken<?>> packageTypes = new HashSet<TypeToken<?>>();
-        packageTypes.add(TypeToken.of(ExampleGenericModel.class));
-        packageTypes.add(TypeToken.of(ExampleSimpleModel.class));
-        translator.setPackageTypes(packageTypes);
+        Collection<Class<?>> packageTypes = new HashSet<>();
+        packageTypes.add(ExampleGenericModel.class);
+        packageTypes.add(ExampleSimpleModel.class);
+        when(remoteModelDiscoveryService.enumerateClasses()).thenReturn(packageTypes);
 
         ConvertedType convertedType = translator.translate(field);
 

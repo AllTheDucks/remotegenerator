@@ -13,6 +13,7 @@ public class ConvertedModelService {
 
     private ConvertedFieldService convertedFieldService;
     private PackageTranslator packageTranslator;
+    private RemoteModelDiscoveryService remoteModelDiscoveryService;
 
     public ConvertedModel getConvertedModel(Class<?> clazz) throws FieldTypeResolutionException {
         ConvertedModel convertedModel = new ConvertedModel();
@@ -52,10 +53,10 @@ public class ConvertedModelService {
         return convertedModels;
     }
 
-//    public Set<ConvertedModel> getAllConvertedModels(String packageName) throws FieldTypeResolutionException {
-//        Set<Class<?>> classes = conversionModelDiscoveryService.enumerateClasses(packageName);
-//        return this.getAllConvertedModels(classes);
-//    }
+    public Collection<ConvertedModel> enumerateModels() throws FieldTypeResolutionException {
+        Collection<Class<?>> classes = remoteModelDiscoveryService.enumerateClasses();
+        return this.getAllConvertedModels(classes);
+    }
 
     public ConvertedFieldService getConvertedFieldService() {
         return convertedFieldService;
@@ -71,5 +72,13 @@ public class ConvertedModelService {
 
     public void setPackageTranslator(PackageTranslator packageTranslator) {
         this.packageTranslator = packageTranslator;
+    }
+
+    public RemoteModelDiscoveryService getRemoteModelDiscoveryService() {
+        return remoteModelDiscoveryService;
+    }
+
+    public void setRemoteModelDiscoveryService(RemoteModelDiscoveryService remoteModelDiscoveryService) {
+        this.remoteModelDiscoveryService = remoteModelDiscoveryService;
     }
 }

@@ -21,14 +21,14 @@ public class RemoteGenerator {
             String outputPath = "/tmp/remotegeneratortest/";
 
             RemoteModelDiscoveryService remoteModelDiscoveryService = new RemoteModelDiscoveryService();
-            Collection<Class<?>> remoteModels = remoteModelDiscoveryService.enumerateClasses(packageName);
+            remoteModelDiscoveryService.addPackage(packageName);
 
             SimplePackageTranslator simplePackageTranslator = new SimplePackageTranslator();
             simplePackageTranslator.addTranslation(packageName, newPackageName);
 
             TypeTranslator typeTranslator = new ClosureTypeTranslator();
-            typeTranslator.addPackageClasses(remoteModels);
             typeTranslator.setPackageTranslator(simplePackageTranslator);
+            typeTranslator.setRemoteModelDiscoveryService(remoteModelDiscoveryService);
 
             FieldTypeResolver fieldTypeResolver = new FieldTypeResolver();
             fieldTypeResolver.setTypeTranslator(typeTranslator);
@@ -42,8 +42,9 @@ public class RemoteGenerator {
             ConvertedModelService convertedModelService = new ConvertedModelService();
             convertedModelService.setConvertedFieldService(convertedFieldService);
             convertedModelService.setPackageTranslator(simplePackageTranslator);
+            convertedModelService.setRemoteModelDiscoveryService(remoteModelDiscoveryService);
 
-            Collection<ConvertedModel> convertedModels = convertedModelService.getAllConvertedModels(remoteModels);
+            Collection<ConvertedModel> convertedModels = convertedModelService.enumerateModels();
 
             SoyModelRenderer soyModelRenderer = new SoyModelRenderer();
             soyModelRenderer.setSoyFilePath("templates/closure.soy");

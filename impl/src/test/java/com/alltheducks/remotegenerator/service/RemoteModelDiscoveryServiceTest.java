@@ -28,7 +28,8 @@ public class RemoteModelDiscoveryServiceTest {
 
     @Test
     public void testEnumerateClasses_withOneAnnotatedClass_expectExampleOne() throws Exception {
-        Collection<Class<?>> classes = remoteModelDiscoveryService.enumerateClasses("com.alltheducks.remotegenerator.example.oneannotatedclass");
+        remoteModelDiscoveryService.addPackage("com.alltheducks.remotegenerator.example.oneannotatedclass");
+        Collection<Class<?>> classes = remoteModelDiscoveryService.enumerateClasses();
 
         assertEquals(1, classes.size());
         assertTrue("Contains Example", classes.contains(Example.class));
@@ -36,7 +37,8 @@ public class RemoteModelDiscoveryServiceTest {
 
     @Test
     public void testEnumerateClasses_withThreeAnnotatedClasses_expectThreeClasses() throws Exception {
-        Collection<Class<?>> classes = remoteModelDiscoveryService.enumerateClasses("com.alltheducks.remotegenerator.example.threeannotatedclasses");
+        remoteModelDiscoveryService.addPackage("com.alltheducks.remotegenerator.example.threeannotatedclasses");
+        Collection<Class<?>> classes = remoteModelDiscoveryService.enumerateClasses();
 
         assertEquals(3, classes.size());
         assertTrue("Contains ExampleOne", classes.contains(ExampleOne.class));
@@ -46,7 +48,8 @@ public class RemoteModelDiscoveryServiceTest {
 
     @Test
     public void testEnumerateClasses_withMixedAnnotatedClasses_expectOnlyAnnotatedClasses() throws Exception {
-        Collection<Class<?>> classes = remoteModelDiscoveryService.enumerateClasses("com.alltheducks.remotegenerator.example.mixedannotations");
+        remoteModelDiscoveryService.addPackage("com.alltheducks.remotegenerator.example.mixedannotations");
+        Collection<Class<?>> classes = remoteModelDiscoveryService.enumerateClasses();
 
         assertEquals(2, classes.size());
         assertTrue("Contains AnnotatedOne", classes.contains(AnnotatedOne.class));
@@ -57,7 +60,8 @@ public class RemoteModelDiscoveryServiceTest {
 
     @Test
     public void testEnumerateClasses_withInheritanceChildAnnotated_expectOnlyChild() throws Exception {
-        Collection<Class<?>> classes = remoteModelDiscoveryService.enumerateClasses("com.alltheducks.remotegenerator.example.inheritancechildannotated");
+        remoteModelDiscoveryService.addPackage("com.alltheducks.remotegenerator.example.inheritancechildannotated");
+        Collection<Class<?>> classes = remoteModelDiscoveryService.enumerateClasses();
 
         assertEquals(1, classes.size());
         assertTrue("Contains ExampleChildWithAnnotation", classes.contains(ExampleChildWithAnnotation.class));
@@ -65,7 +69,8 @@ public class RemoteModelDiscoveryServiceTest {
 
     @Test
     public void testEnumerateClasses_withInheritanceParentAnnotated_expectOnlyParent() throws Exception {
-        Collection<Class<?>> classes = remoteModelDiscoveryService.enumerateClasses("com.alltheducks.remotegenerator.example.inheritanceparentannotated");
+        remoteModelDiscoveryService.addPackage("com.alltheducks.remotegenerator.example.inheritanceparentannotated");
+        Collection<Class<?>> classes = remoteModelDiscoveryService.enumerateClasses();
 
         assertEquals(1, classes.size());
         assertTrue("Contains ExampleParentWithAnnotation", classes.contains(ExampleParentWithAnnotation.class));

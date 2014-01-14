@@ -2,6 +2,7 @@ package com.alltheducks.remotegenerator.translator;
 
 import com.alltheducks.remotegenerator.exception.TranslationException;
 import com.alltheducks.remotegenerator.model.ConvertedType;
+import com.alltheducks.remotegenerator.service.RemoteModelDiscoveryService;
 import com.google.common.reflect.TypeToken;
 
 import java.lang.reflect.Field;
@@ -10,23 +11,20 @@ import java.util.HashSet;
 
 public abstract class TypeTranslator {
 
-    private Collection<TypeToken<?>> packageTypes = new HashSet<TypeToken<?>>();
+    private RemoteModelDiscoveryService remoteModelDiscoveryService;
     private PackageTranslator packageTranslator;
 
     public abstract ConvertedType translate(Field field) throws TranslationException;
 
-    public void addPackageClasses(Collection<Class<?>> classes) {
+    public Collection<TypeToken<?>> getPackageTypes() {
+        Collection<Class<?>> classes = remoteModelDiscoveryService.enumerateClasses();
+
+        Collection<TypeToken<?>> packageTypes = new HashSet<>();
         for(Class<?> clazz : classes) {
             packageTypes.add(TypeToken.of(clazz));
         }
-    }
 
-    public Collection<TypeToken<?>> getPackageTypes() {
         return packageTypes;
-    }
-
-    public void setPackageTypes(Collection<TypeToken<?>> packageTypes) {
-        this.packageTypes = packageTypes;
     }
 
     public PackageTranslator getPackageTranslator() {
@@ -35,5 +33,13 @@ public abstract class TypeTranslator {
 
     public void setPackageTranslator(PackageTranslator packageTranslator) {
         this.packageTranslator = packageTranslator;
+    }
+
+    public RemoteModelDiscoveryService getRemoteModelDiscoveryService() {
+        return remoteModelDiscoveryService;
+    }
+
+    public void setRemoteModelDiscoveryService(RemoteModelDiscoveryService remoteModelDiscoveryService) {
+        this.remoteModelDiscoveryService = remoteModelDiscoveryService;
     }
 }
