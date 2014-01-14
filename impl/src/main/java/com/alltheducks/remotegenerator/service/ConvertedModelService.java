@@ -4,10 +4,10 @@ import com.alltheducks.remotegenerator.exception.FieldTypeResolutionException;
 import com.alltheducks.remotegenerator.model.ConvertedField;
 import com.alltheducks.remotegenerator.model.ConvertedModel;
 import com.alltheducks.remotegenerator.translator.PackageTranslator;
+import com.google.common.reflect.TypeToken;
 
-import java.util.Collection;
-import java.util.HashSet;
-import java.util.Set;
+import java.lang.reflect.TypeVariable;
+import java.util.*;
 
 public class ConvertedModelService {
 
@@ -18,7 +18,17 @@ public class ConvertedModelService {
         ConvertedModel convertedModel = new ConvertedModel();
         convertedModel.setName(this.getPackageTranslator().translate(clazz.getName()));
 
-        Set<ConvertedField> convertedFields = convertedFieldService.getAllConvertedFields(clazz);
+        TypeVariable<? extends Class<?>>[] typeParameters = clazz.getTypeParameters();
+        Set<TypeToken<?>> genericParameters = new HashSet<>(typeParameters.length);
+        List<String> genericParameterNames = new ArrayList<>(typeParameters.length);
+        for(TypeVariable<? extends Class<?>> typeVariable : typeParameters) {
+            TypeToken<?> typeToken = TypeToken.of(typeVariable);
+            genericParameters.add(typeToken);
+            genericParameterNames.add(typeToken.toString());
+        }
+        convertedModel.setGenericParameters(genericParameterNames);
+
+        Set<ConvertedField> convertedFields = convertedFieldService.getAllConvertedFields(clazz, genericParameters);
         convertedModel.setConvertedFields(convertedFields);
 
         Set<String> requires = new HashSet<String>();

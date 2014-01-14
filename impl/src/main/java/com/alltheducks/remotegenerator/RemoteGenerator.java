@@ -54,7 +54,7 @@ public class RemoteGenerator {
 
             FileOutputStreamService fileOutputStreamService = new FileOutputStreamService();
             fileOutputStreamService.setFileNameService(deduplicatingFileNameService);
-            fileOutputStreamService.setBasePath("d:/tmp/remotegeneratortest/");
+            fileOutputStreamService.setBasePath("/tmp/remotegeneratortest/");
 
             Iterator<ConvertedModel> iterator = convertedModels.iterator();
             while(iterator.hasNext()) {

@@ -7,6 +7,7 @@ import com.alltheducks.remotegenerator.model.ConvertedType;
 import com.alltheducks.remotegenerator.service.ConvertedFieldService;
 import com.alltheducks.remotegenerator.service.ConvertedModelService;
 import com.alltheducks.remotegenerator.translator.SimplePackageTranslator;
+import com.google.common.reflect.TypeToken;
 import org.junit.Before;
 import org.junit.Test;
 
@@ -42,14 +43,15 @@ public class ConvertedModelServiceTest {
         Set<ConvertedField> convertedFields = new HashSet<ConvertedField>();
         convertedFields.add(convertedField);
 
-        when(convertedFieldService.getAllConvertedFields(Example.class)).thenReturn(convertedFields);
+        when(convertedFieldService.getAllConvertedFields(Example.class, new HashSet<TypeToken<?>>())).thenReturn(convertedFields);
 
         ConvertedModel convertedModel = convertedModelService.getConvertedModel(Example.class);
         assertEquals("com.alltheducks.remotegenerator.example.oneannotatedclass.Example", convertedModel.getName());
         assertEquals(convertedFields, convertedModel.getConvertedFields());
     }
 
-    @Test void testGetConvertedMode_withGenericExample_expectConversion() throws Exception {
+    @Test
+    public void testGetConvertedMode_withGenericExample_expectConversion() throws Exception {
 
     }
 }

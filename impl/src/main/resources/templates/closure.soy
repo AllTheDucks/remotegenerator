@@ -7,6 +7,7 @@
   * @param name The name the class.
   * @param fields The classes fields.
   * @param requires The classes required by this class.
+  * @param genericParameters The generic type parameters.
   * @param originalName The name of the class in Java.
   */
 {template .convertedModel}
@@ -28,9 +29,15 @@
 {literal}
 /**
   * This class was automatically generated from the java class:
-  * {/literal}{$originalName}{literal}.
+  * {/literal}
+  {$originalName}
+  {literal}
   * DO NOT MODIFY THIS CLASS DIRECTLY.
-  * @constructor
+  * @constructor{/literal}
+    {call .genericParameters}
+      {param genericParameters: $genericParameters /}
+    {/call}
+  {literal}
   */
 {/literal}
     {$name} = function() {lb}{\r}{\n}{\r}{\n}
@@ -68,4 +75,21 @@
     {literal}/** @type {{/literal}
     {$name}
     {literal}} */{/literal}
+{/template}
+
+/**
+  *
+  * @param genericParameters the generic parameters
+  */
+{template .genericParameters}
+    {if length($genericParameters) > 0}
+      {\r}{\n}
+      {literal}  * @template {/literal}
+      {foreach $genericParameter in $genericParameters}
+        {$genericParameter}
+        {if not isLast($genericParameter)}
+          ,{sp}
+        {/if}
+      {/foreach}
+    {/if}
 {/template}

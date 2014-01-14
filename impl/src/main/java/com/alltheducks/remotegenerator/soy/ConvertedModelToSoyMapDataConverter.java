@@ -16,6 +16,7 @@ public class ConvertedModelToSoyMapDataConverter {
         soyMapData.put("name", convertedModel.getName());
         soyMapData.put("fields", convert(convertedModel.getConvertedFields()));
         soyMapData.put("requires", convertedModel.getRequires());
+        soyMapData.put("genericParameters", convertedModel.getGenericParameters());
         soyMapData.put("originalName", convertedModel.getOriginalName());
 
         return soyMapData;

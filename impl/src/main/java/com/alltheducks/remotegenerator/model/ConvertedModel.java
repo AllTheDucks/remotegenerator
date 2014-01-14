@@ -1,5 +1,6 @@
 package com.alltheducks.remotegenerator.model;
 
+import java.util.List;
 import java.util.Set;
 
 public class ConvertedModel {
@@ -7,6 +8,7 @@ public class ConvertedModel {
     private String name;
     private Set<ConvertedField> convertedFields;
     private Set<String> requires;
+    private List<String> genericParameters;
     private String originalName;
 
     public String getName() {
@@ -31,6 +33,14 @@ public class ConvertedModel {
 
     public void setRequires(Set<String> requires) {
         this.requires = requires;
+    }
+
+    public List<String> getGenericParameters() {
+        return genericParameters;
+    }
+
+    public void setGenericParameters(List<String> genericParameters) {
+        this.genericParameters = genericParameters;
     }
 
     public String getOriginalName() {
